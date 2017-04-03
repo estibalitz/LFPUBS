@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
+import java.text.DecimalFormat;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -48,6 +50,7 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
 import splitSequences.simpleEvent;
+import splitSequences.fullSequences;
 
 import com.jgraph.layout.JGraphFacade;
 import com.jgraph.layout.hierarchical.JGraphHierarchicalLayout;
@@ -56,6 +59,8 @@ import conditions.simpleBasicConditionNominal;
 import conditions.simpleBasicConditionNumeric;
 import conditions.simpleCompleteCondition;
 import frequentSequences.simpleSequence;
+ //HAU ALDAU BESTIEKIN LOTURE EITTEUNIEN
+
 
 import javax.swing.JTextArea;
 
@@ -84,7 +89,7 @@ public class Conditions extends JFrame {
 	private JTextField jTextFieldSetParametersDemandedMinimumLevel = null;
 
 	private JButton jButtonDiscoverConditions = null;
-
+	
 	private JLabel jLabelSelectSequence = null;
 
 	private JComboBox jComboBoxSelectSequence = null;
@@ -151,6 +156,8 @@ public class Conditions extends JFrame {
 		}
 		return jPanelSetParametersConditions;
 	}
+
+	
 
 	/**
 	 * This method initializes jPanelShowConditions	
@@ -225,7 +232,7 @@ public class Conditions extends JFrame {
 		}
 		return jButtonSetParameterRestoreDefaultValues;
 	}
-
+	
 	/**
 	 * This method initializes jTextFieldSetParametersDemandedMinimumLevel	
 	 * 	
@@ -264,7 +271,6 @@ public class Conditions extends JFrame {
 								//initial Time
 								s1=d.getTime();
 								DataStructure.getInstance().getTopologyDataStructure().setNumFrequentSequences(DataStructure.getInstance().getFrequentSequencesDataStructure().getAllFoundSequences().size());
-								
 								for (int i = 0; i < DataStructure.getInstance().getTopologyDataStructure().getNumFrequentSequences(); i++){
 									for (int j = 0; j < DataStructure.getInstance().getTopologyDataStructure().getTopologyAllSequences().get(i).length; j++){
 										ArrayList<Integer> listActions = new ArrayList<Integer>();
@@ -309,8 +315,10 @@ public class Conditions extends JFrame {
 									    JOptionPane.WARNING_MESSAGE);
 							}
 							createReport(DataStructure.getInstance().getFrequentSequencesDataStructure().getAllFoundSequences(), DataStructure.getInstance().getSimplePatterns());
-							createReportLLFPUBS(DataStructure.getInstance().getFrequentSequencesDataStructure().getAllFoundSequences(), DataStructure.getInstance().getSimplePatterns());
+							createReportLLFPUBS(DataStructure.getInstance().getFrequentSequencesDataStructure().getAllFoundSequences(), DataStructure.getInstance().getSimplePatterns(), DataStructure.getInstance().getSplitSequencesDataStructure().getAllRawSequences(),DataStructure.getInstance().getFrequentSequencesDataStructure().getAllFoundSequences());
 							createMM(DataStructure.getInstance().getFrequentSequencesDataStructure().getAllFoundSequences(), DataStructure.getInstance().getSimplePatterns());
+							
+							//Interface should take into account all this methods ran above
 						}
 					});
 			
@@ -423,38 +431,61 @@ public class Conditions extends JFrame {
 		
 		//set the TempNodeNameCells empty
 		DataStructure.getInstance().getTimeRelationsDataStructure().setTempNodeNameCells(new ArrayList<String>());
+			
+		//-------------------------------------------------------------------------------
+		//               Hau dana pantallarau nahi baldin bada                    //
+		//------------------------------------------------------------------------------
+		
 				
-					
 		//nodes
 		for (int i = 0; i < simplePattern.getTopologyNodes().size(); i++){
+			
 			tempNodeCells.add(initCell(findActionName(simplePattern.getTopologyNodes().get(i).getNode()),20,20));
 			DataStructure.getInstance().getTimeRelationsDataStructure().getTempNodeNameCells().add(tempNodeCells.get(i).toString());
-		}
 		
+		
+		}
 
 		tempNodeCells.add(initCell("start",20,20));
 		tempNodeCells.add(initCell("end",20,20));
+		
 		//relations
-		for (int i = 0; i < simplePattern.getTopologyNodes().size(); i++){
+
+		for (int i = simplePattern.getTopologyNodes().size()-1; i >=0; i--){
 			for (int j = 0; j < simplePattern.getTopologyNodes().get(i).getNextActions().size(); j++){
 				if (simplePattern.getTopologyNodes().get(i).getNextActionsFrequency().get(j) > minimumFrequency){
 					int find = findNode(simplePattern.getTopologyNodes().get(i).getNextActions().get(j),simplePattern);
 					if (find == -1){
-						tempRelationCells.add(initRelation(tempNodeCells.get(i), tempNodeCells.get(tempNodeCells.size()-1)));
+						tempRelationCells.add(initRelation(tempNodeCells.get(i), tempNodeCells.get(tempNodeCells.size()-1),"--"));
+						}
+					
 					}
-					else{
-						tempRelationCells.add(initRelation(tempNodeCells.get(i), tempNodeCells.get(find)));
-					}
-				}
 			}
 			for (int j = 0; j < simplePattern.getTopologyNodes().get(i).getPreviousActions().size(); j++){
-				if (simplePattern.getTopologyNodes().get(i).getPreviousActions().get(j).compareTo("start")==0){
+				int find = findNode(simplePattern.getTopologyNodes().get(i).getPreviousActions().get(j),simplePattern);
 					if (simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j) > minimumFrequency){
-						tempRelationCells.add(initRelation(tempNodeCells.get(tempNodeCells.size()-2), tempNodeCells.get(i)));
+						if (simplePattern.getTopologyNodes().get(i).getPreviousActions().get(j).compareTo("start")==0){
+						tempRelationCells.add(initRelation(tempNodeCells.get(tempNodeCells.size()-2), tempNodeCells.get(i),"--"));
+							}
+						else{
+					if(simplePattern.getTopologyNodes().get(i).getTimeRelations().get(j).size()>0){
+						for(int k=0;k<simplePattern.getTopologyNodes().get(i).getTimeRelations().get(j).size();k++){
+							double time=((double)Math.round(simplePattern.getTopologyNodes().get(i).getTimeRelations().get(j).get(k).getSimpleTimeRelation()));
+							tempRelationCells.add(initRelation(tempNodeCells.get(find),tempNodeCells.get(i),String.valueOf(time)));
+									}
+							}
+							
+						else{
+							tempRelationCells.add(initRelation(tempNodeCells.get(find),tempNodeCells.get(i),"NAN"));
+						}
+						}
 					}
+					
 				}
 			}
-		}
+		
+
+		
 		
 		//include all them in cells[]
 		DefaultGraphCell[] cells = new DefaultGraphCell[tempNodeCells.size()+tempRelationCells.size()];
@@ -471,25 +502,21 @@ public class Conditions extends JFrame {
 		JGraphFacade facade = new JGraphFacade(graph, roots); 
 		JGraphHierarchicalLayout layout = new JGraphHierarchicalLayout();
 		layout.setOrientation(SwingConstants.WEST);
-		//JGraphTreeLayout layout = new JGraphTreeLayout();
-		//JGraphSelfOrganizingOrganicLayout layout = new JGraphSelfOrganizingOrganicLayout();
-		//JGraphOrganicLayout layout = new JGraphOrganicLayout();
 		layout.run(facade); 
 		Map nested = facade.createNestedMap(true, true); 
 		graph.getGraphLayoutCache().edit(nested);
-		//JFrame frame = new JFrame();
-		//frame.getContentPane().add(new JScrollPane(graph));
-		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.pack();
-		//frame.setVisible(true);
 		
+
 		graph.addGraphSelectionListener(new org.jgraph.event.GraphSelectionListener() {
 			public void valueChanged(GraphSelectionEvent e) {
+				jTextAreaShowConditions.setText("");
+				jTextAreaShowConditions.setLineWrap(true);
+				jTextAreaShowConditions.setWrapStyleWord(true);
+				jTextAreaShowConditions.append(newline);
+				writeGeneralConditions(DataStructure.getInstance().getSplitSequencesDataStructure().getAllRawSequences(),jComboBoxSelectSequence.getSelectedIndex(),DataStructure.getInstance().getFrequentSequencesDataStructure().getAllFoundSequences());
+				
 				int indexCell = getIndexNodeCell(e.getCell().toString(), DataStructure.getInstance().getTimeRelationsDataStructure().getTempNodeNameCells());
 				if (indexCell != -1){
-					jTextAreaShowConditions.setText("");
-					jTextAreaShowConditions.setLineWrap(true);
-					jTextAreaShowConditions.setWrapStyleWord(true);
 					jTextAreaShowConditions.append(newline);
 					jTextAreaShowConditions.append("Node Name:  " + DataStructure.getInstance().getSimplePatterns().get(jComboBoxSelectSequence.getSelectedIndex()).getTopologyNodes().get(indexCell).getNode());
 					jTextAreaShowConditions.append(newline);
@@ -501,8 +528,8 @@ public class Conditions extends JFrame {
 							writeConditions (DataStructure.getInstance().getSimplePatterns().get(jComboBoxSelectSequence.getSelectedIndex()).getTopologyNodes().get(indexCell).getDisjunctionConditions().get(i), jTextAreaShowConditions);
 							jTextAreaShowConditions.append(newline);
 						}
+						
 					}
-					
 				}
 			}
 		});
@@ -518,6 +545,7 @@ public class Conditions extends JFrame {
 					jTextAreaShowConditions.append("     " + ((simpleBasicConditionNumeric)conditions.get(i).getCompleteCondition().get(j)).name + " " + ((simpleBasicConditionNumeric)conditions.get(i).getCompleteCondition().get(j)).symbol + ((simpleBasicConditionNumeric)conditions.get(i).getCompleteCondition().get(j)).value);
 				}
 				else{
+					System.out.println("nominal");
 					jTextAreaShowConditions.append("     " + ((simpleBasicConditionNominal)conditions.get(i).getCompleteCondition().get(j)).name + " " + ((simpleBasicConditionNominal)conditions.get(i).getCompleteCondition().get(j)).symbol + ((simpleBasicConditionNominal)conditions.get(i).getCompleteCondition().get(j)).value);
 				}
 			}
@@ -525,11 +553,37 @@ public class Conditions extends JFrame {
 			jTextAreaShowConditions.append(newline);
 		}
 	}
+	public void writeGeneralConditions( ArrayList<fullSequences> allsequences,int index,ArrayList<simpleSequence> frequentSets){
+		ArrayList<Integer>sequences=new ArrayList();
+		for (int i = 0; i < frequentSets.get(index).getInstances().size(); i++){
+			int seq=frequentSets.get(index).getInstances().get(i);
+			sequences.add(seq);
+		}
+		for (int i = 0; i < frequentSets.get(index).getShortExtraInstances().size(); i++){
+			int seq=frequentSets.get(index).getShortExtraInstances().get(i);
+			sequences.add(seq);
+		}
+		
+		String dayOfWeek= new String();
+		String timeOfDay=new String();
+		
+		dayOfWeek=DataStructure.getInstance().getConditionsDataStructure().getGeneralConditions().needDayOfWeek(allsequences,sequences);
+		timeOfDay=DataStructure.getInstance().getConditionsDataStructure().getGeneralConditions().needAverageTime(allsequences,sequences);
+		String[] TimeOfDay=timeOfDay.split("T");
+		
+		jTextAreaShowConditions.append("Action Map "+index);
+		jTextAreaShowConditions.append(newline);
+		jTextAreaShowConditions.append("(General Conditions)");
+		jTextAreaShowConditions.append(newline);
+		jTextAreaShowConditions.append(" context (DayOfWeek (=,"+dayOfWeek+")) & context (TimeOfDay(>,"+TimeOfDay[0]+")) & context (TimeOfDay(<,"+TimeOfDay[1]+"))");
+		jTextAreaShowConditions.append(newline);
+	
+	}
 	
 	
 	public static DefaultGraphCell initCell (String name, int x1, int y1){
 		DefaultGraphCell cell = new DefaultGraphCell(new String(name));
-		GraphConstants.setBounds(cell.getAttributes(), new Rectangle2D.Double(x1,y1,60,30));
+		GraphConstants.setBounds(cell.getAttributes(), new Rectangle2D.Double(x1,y1,90,30));
 		GraphConstants.setBorderColor(cell.getAttributes(), Color.getHSBColor(0.63f,0.6464f,1.0f));
 		GraphConstants.setBackground(cell.getAttributes(), Color.getHSBColor(0.644f, 0.3636f, 1.0f)); //to calculate http://home.comcast.net/~ed-abramson/14ColorTest/HSB-and-RGB-Colors.html
 		GraphConstants.setOpaque(cell.getAttributes(), true);
@@ -541,9 +595,9 @@ public class Conditions extends JFrame {
 		return cell;
 	}
 	
-	public static DefaultGraphCell initRelation (DefaultGraphCell cell0, DefaultGraphCell cell1){
+	public static DefaultGraphCell initRelation (DefaultGraphCell cell0, DefaultGraphCell cell1,String label){
 		DefaultGraphCell relation = new DefaultGraphCell();
-		DefaultEdge edge = new DefaultEdge();
+		DefaultEdge edge = new DefaultEdge(new String(label));
 		
 		edge.setSource(cell0.getChildAt(0));
 		edge.setTarget(cell1.getChildAt(0));
@@ -630,12 +684,13 @@ public static void createReport (ArrayList<simpleSequence> sequences, ArrayList<
 	}		
 	}
 
-public static void createReportLLFPUBS (ArrayList<simpleSequence> sequences, ArrayList<simplePattern> simplePatterns){
+public static void createReportLLFPUBS (ArrayList<simpleSequence> sequences, ArrayList<simplePattern> simplePatterns, ArrayList<fullSequences> allsequences,ArrayList<simpleSequence> frequentSets){
 	
 	try{
 		BufferedWriter bw = new BufferedWriter(new FileWriter("result\\resultLLPUBS.txt"));
 		PrintWriter writer = new PrintWriter(bw);
-		
+		String dayOfWeek= new String();
+		String timeOfDay=new String();
 		
 		writer.println();
 		
@@ -644,10 +699,21 @@ public static void createReportLLFPUBS (ArrayList<simpleSequence> sequences, Arr
 			writer.println();
 			writer.println("(General Conditions)");
 			writer.println();
-			//writer.println("	Basic actions " + translateActionsToString(sequences.get(i).getSequence()).toString());
-			//writer.println("	Basic instances (" + sequences.get(i).getInstances().size() + "): " + sequences.get(i).getInstances().toString());
-			//writer.println(" 	Extra actions " + translateActionsToString(sequences.get(i).getLongExtraActions()).toString());
-			//writer.println("	Extra instances (" + sequences.get(i).getShortExtraInstances().size() + "): " +  sequences.get(i).getShortExtraInstances().toString());
+			ArrayList<Integer>sequencess=new ArrayList();
+			
+			for(int j=0;j<frequentSets.get(i).getInstances().size();j++){
+				int seq=frequentSets.get(i).getInstances().get(j);
+				sequencess.add(seq);
+			}
+			for(int j=0;j<frequentSets.get(i).getShortExtraInstances().size();j++){
+				int seq=frequentSets.get(i).getShortExtraInstances().get(j);
+				sequencess.add(seq);
+			}
+			dayOfWeek=DataStructure.getInstance().getConditionsDataStructure().getGeneralConditions().needDayOfWeek(allsequences,sequencess);
+			timeOfDay=DataStructure.getInstance().getConditionsDataStructure().getGeneralConditions().needAverageTime(allsequences,sequencess);
+			String[] TimeOfDay=timeOfDay.split("T");
+			writer.println(" context (DayOfWeek (=,"+dayOfWeek+"))& context (TimeOfDay(>,"+TimeOfDay[0]+")) & context (TimeOfDay(<,"+TimeOfDay[1]+"))");
+			writer.println();
 			writeTopologyLLFPUBS(simplePatterns.get(i), writer);
 		}
 		writer.close();
@@ -982,6 +1048,7 @@ public static void createReportLLFPUBS (ArrayList<simpleSequence> sequences, Arr
 		return tempTimeRelation;		
 	}
 	
+	
 public static void createMM(ArrayList<simpleSequence> sequences, ArrayList<simplePattern> simplePatterns){
 	
 	try{
@@ -1110,5 +1177,4 @@ public static void createMM(ArrayList<simpleSequence> sequences, ArrayList<simpl
 				return tempStr;
 			}		
 		}
-
 }

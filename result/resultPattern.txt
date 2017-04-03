@@ -1,0 +1,56 @@
+
+Action Map 0
+
+(General Conditions)
+
+ context (DayOfWeek (=,Monday,Tuesday,Wednesday,Thursday,Friday))& context (TimeOfDay(>,09:17:43)) & context (TimeOfDay(<,09:32:27))
+
+(Action Pattern 0)
+ON occurs IF context ()
+THEN do (unordered,((ON,Kettle)&(OFF,CorridorFrontMove ), t) when: t = t0 + 13.0 s. 
+
+(Action Pattern 1)
+ON occurs IF context ()
+THEN do (unordered,((OFF,BedroomDoor)&(ON,CorridorFrontMove ), t) when: t = t0 + 0.0 s. 
+
+(Action Pattern 2)
+ON occurs IF context ()
+THEN do (simple,(ON,BedroomDoor ), t) when: t is after t0
+
+(Action Pattern 3)
+ON occurs IF context ()
+THEN do (simple,(OFF,LightBedroom ), t) when: t = t0 + 180.0 s. 
+
+
+(Action Pattern 5)
+ON occurs (simple,(ON,LightBedroom ), t0) 
+IF context ()
+THEN do (unordered,((ON,Kettle)&(OFF,CorridorFrontMove ), t) when: t = t0 + 20.0 s. 
+
+Action Map 1
+
+(General Conditions)
+
+ context (DayOfWeek (=,Monday,Tuesday,Wednesday,Thursday,Friday))& context (TimeOfDay(>,09:17:43)) & context (TimeOfDay(<,09:32:27))
+
+(Action Pattern 0)
+ON occurs IF context ()
+THEN do (unordered,((ON,Kettle)&(OFF,CorridorFrontMove ), t) when: t = t0 + 13.0 s. 
+
+(Action Pattern 1)
+ON occurs IF context ()
+THEN do (unordered,((OFF,BedroomDoor)&(ON,CorridorFrontMove ), t) when: t = t0 + 0.0 s. 
+
+(Action Pattern 2)
+ON occurs IF context ()
+THEN do (simple,(ON,BedroomDoor ), t) when: t is after t0
+
+(Action Pattern 3)
+ON occurs IF context ()
+THEN do (simple,(OFF,LightBedroom ), t) when: t = t0 + 180.0 s. 
+
+
+(Action Pattern 5)
+ON occurs (simple,(ON,LightBedroom ), t0) 
+IF context ()
+THEN do 

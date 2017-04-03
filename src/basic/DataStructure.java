@@ -9,6 +9,7 @@ import topology.topologyDataStructure;
 import frequentSequences.frequentSequencesDataStructure;
 import timeRelations.timeRelationsDataStructure;
 import conditions.conditionsDataStructure;
+import tree.TreeDataStructure;
 
 public class DataStructure {
 	
@@ -38,7 +39,8 @@ public class DataStructure {
 
 	//conditions
 	conditionsDataStructure conditions = new conditionsDataStructure();
-	
+	//Tree
+	TreeDataStructure tree=new TreeDataStructure();
 	
 	private DataStructure(){}
 	public static DataStructure getInstance()
@@ -99,5 +101,8 @@ public class DataStructure {
 		return conditions;
 	}
 	
+	public TreeDataStructure getTreeDataStructure(){
+		return tree;
+	}
 		
 }

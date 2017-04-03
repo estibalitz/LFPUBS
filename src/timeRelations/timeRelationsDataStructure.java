@@ -11,6 +11,7 @@ public class timeRelationsDataStructure {
 	ArrayList<String> tempNodeNameCells = new ArrayList<String>();
 	
 	simpleTimeRelation timeRelation = new simpleTimeRelation();
+	findTimeActions timeActions=new findTimeActions();
 	
 	public timeRelationsDataStructure (){
 		
@@ -55,5 +56,6 @@ public class timeRelationsDataStructure {
 	public void setSimpleTimeRelation (simpleTimeRelation timeRelation){
 		this.timeRelation = timeRelation;
 	}
+	
 
 }

@@ -5,9 +5,11 @@ public class eventLabel {
 	protected String device;
 	protected String action;
 	
+	
 	public eventLabel(String device, String action){
 		this.device = device;
 		this.action = action;
+	
 	}
 	
 	public String getDevice (){
@@ -17,5 +19,6 @@ public class eventLabel {
 	public String getAction (){
 		return this.action;
 	}
+	
 	
 }

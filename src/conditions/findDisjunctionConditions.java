@@ -258,12 +258,12 @@ public class findDisjunctionConditions {
 				int tempIsIn = isIn(simpleConditions.get(i).getConsequent(), tempFinalConditions);
 				if (tempIsIn != -1){
 					tempFinalConditions.get(tempIsIn).add(new simpleCompleteCondition(simpleConditions.get(i)));
-					//System.out.println("group " + tempIsIn + " condition " + simpleConditions.get(i).getConsequent());
+					//System.out.println("group " + tempIsIn + " condition " + simpleConditions.get(i).getConsequent());//nik jarri
 				}
 				else{
 					tempFinalConditions.add(new ArrayList<simpleCompleteCondition>());
 					tempFinalConditions.get(indexGroup).add(new simpleCompleteCondition(simpleConditions.get(i)));
-					//System.out.println("group " + indexGroup + " condition " + simpleConditions.get(i).getConsequent());
+					//System.out.println("group " + indexGroup + " condition " + simpleConditions.get(i).getConsequent());//nik jarri
 					indexGroup++;
 				}
 			}

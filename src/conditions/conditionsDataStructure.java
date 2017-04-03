@@ -4,6 +4,7 @@ public class conditionsDataStructure {
 	
 	//	condition
 	findDisjunctionConditions disjunctionConditions = new findDisjunctionConditions();
+	findGeneralConditions generalConditions=new findGeneralConditions();
 	int minimumDemandedFrequencyForConditions = 4; //it must be > 1
 	int minimumRelationPercentage = 60;
 	
@@ -14,7 +15,7 @@ public class conditionsDataStructure {
 	public findDisjunctionConditions getDisjunctionConditions (){
 		return disjunctionConditions;
 	}
-	
+
 	public void setDisjunctionConditions (findDisjunctionConditions disjunctionConditions){
 		this.disjunctionConditions = disjunctionConditions;
 	}
@@ -34,6 +35,13 @@ public class conditionsDataStructure {
 	public void setMinimumRelationPercentage (int minimumRelationPercentage){
 		this.minimumRelationPercentage = minimumRelationPercentage;
 	}
+	public findGeneralConditions getGeneralConditions(){
+		return generalConditions;
+	}
+	public void setGeneralConditions(findGeneralConditions generalConditions){
+		this.generalConditions=generalConditions;
+	}
+	
 	
 	
 

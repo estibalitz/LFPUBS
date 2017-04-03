@@ -43,6 +43,9 @@ public class menuTabbed {
 		
 		Conditions jPanelConditions = new Conditions();
 		
+		Automate jPanelAutomate= new Automate();
+		
+		//Decision jPanelDecision=new Decision;
 		if (jTabbedPane0 == null) {
 			
 			jTabbedPane0 = new JTabbedPane();
@@ -53,21 +56,8 @@ public class menuTabbed {
 			jTabbedPane0.addTab("Topology", null, jPanelTopology.setJPanelTopology(), null);
 			jTabbedPane0.addTab("Time Relations", null, jPanelTimeRelations.setJPanelTimeRelations(), null);
 			jTabbedPane0.addTab("Conditions", null, jPanelConditions.setJPanelConditions(), null);
-			/*jTabbedPane0.addTab("Loading Data", null, getJPanel(), null);
-			jTabbedPane0.addTab("Preprocessing Data", null, getJPanel1(), null);
-			jTabbedPane0.setEnabledAt(1, false);
-			jTabbedPane0.addTab("Frequent Sets", null, getJPanel2(), null);
-			jTabbedPane0.setEnabledAt(2, false);
-			jTabbedPane0.addTab("Topology", null, getJPanel3(), null);
-			jTabbedPane0.setEnabledAt(3, false);
-			jTabbedPane0.addTab("Time Relations", null, getJPanel4(), null);
-			jTabbedPane0.setEnabledAt(4, false);
-			jTabbedPane0.addTab("Conditions", null, getJPanel5(), null);
-			jTabbedPane0.setEnabledAt(5, false);
-			jTabbedPane0.addTab("Run", null, getJPanel6(), null);
-			jTabbedPane0.setEnabledAt(6, false);
-			jTabbedPane0.addTab("Visualize", null, getJPanel7(), null);
-			jTabbedPane0.setEnabledAt(7, false);*/
+			jTabbedPane0.addTab("Automation", null, jPanelAutomate.setJPanelAutomate(), null);
+	
 		}
 		return jTabbedPane0;	
 	}

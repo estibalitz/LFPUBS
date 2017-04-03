@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.Font;
 import java.awt.font.*;
+import java.awt.geom.Point2D;
 
 import javax.swing.JButton;
 
@@ -50,6 +51,7 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.*;
+
 
 import com.jgraph.layout.JGraphFacade;
 import com.jgraph.layout.hierarchical.JGraphHierarchicalLayout;
@@ -658,41 +660,38 @@ public class Topology extends JFrame {
 		ArrayList<DefaultGraphCell> tempRelationCells = new ArrayList<DefaultGraphCell>();
 		
 		//nodes
-		for (int i = 0; i < simplePattern.getTopologyNodes().size(); i++){
-			tempNodeCells.add(initCell(findActionName(simplePattern.getTopologyNodes().get(i).getNode()),20,20));
-		}
-		tempNodeCells.add(initCell("start",20,20));
-		tempNodeCells.add(initCell("end",20,20));
-		
-		//visualize on the screen
-		/*for (int i = 0; i < simplePattern.getTopologyNodes().size(); i++){
-			System.out.println("Node: " + simplePattern.getTopologyNodes().get(i).getNode());
-			for (int j = 0; j < simplePattern.getTopologyNodes().get(i).getNextActions().size(); j++){
-				System.out.println("    NextNode: " + simplePattern.getTopologyNodes().get(i).getNextActions().get(j) + ", Frequency: " + simplePattern.getTopologyNodes().get(i).getNextActionsFrequency().get(j));
-			}
-		}*/
-		
-		//relations
-		for (int i = 0; i < simplePattern.getTopologyNodes().size(); i++){
-			for (int j = 0; j < simplePattern.getTopologyNodes().get(i).getNextActions().size(); j++){
-				if (simplePattern.getTopologyNodes().get(i).getNextActionsFrequency().get(j) > minimumFrequency){
-					int find = findNode(simplePattern.getTopologyNodes().get(i).getNextActions().get(j),simplePattern);
-					if (find == -1){
-						tempRelationCells.add(initRelation(tempNodeCells.get(i), tempNodeCells.get(tempNodeCells.size()-1), Integer.toString(simplePattern.getTopologyNodes().get(i).getNextActionsFrequency().get(j))));
+				for (int i = 0; i < simplePattern.getTopologyNodes().size(); i++){
+					tempNodeCells.add(initCell(findActionName(simplePattern.getTopologyNodes().get(i).getNode()),20,20));
+				}
+				tempNodeCells.add(initCell("start",20,20));
+				tempNodeCells.add(initCell("end",20,20));
+
+				
+				//relations
+				for (int i = 0; i < simplePattern.getTopologyNodes().size(); i++){
+					for (int j = 0; j < simplePattern.getTopologyNodes().get(i).getNextActions().size(); j++){
+						if (simplePattern.getTopologyNodes().get(i).getNextActionsFrequency().get(j) > minimumFrequency){
+							int find = findNode(simplePattern.getTopologyNodes().get(i).getNextActions().get(j),simplePattern);
+							if (find == -1){
+								tempRelationCells.add(initRelation(tempNodeCells.get(i), tempNodeCells.get(tempNodeCells.size()-1), Integer.toString(simplePattern.getTopologyNodes().get(i).getNextActionsFrequency().get(j))));
+							}
+							else{
+								tempRelationCells.add(initRelation(tempNodeCells.get(i), tempNodeCells.get(find), Integer.toString(simplePattern.getTopologyNodes().get(i).getNextActionsFrequency().get(j))));
+							}
+						}
 					}
-					else{
-						tempRelationCells.add(initRelation(tempNodeCells.get(i), tempNodeCells.get(find), Integer.toString(simplePattern.getTopologyNodes().get(i).getNextActionsFrequency().get(j))));
+					for (int j = 0; j < simplePattern.getTopologyNodes().get(i).getPreviousActions().size(); j++){
+						if (simplePattern.getTopologyNodes().get(i).getPreviousActions().get(j).compareTo("start")==0){
+							if (simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j) > minimumFrequency){
+								tempRelationCells.add(initRelation(tempNodeCells.get(tempNodeCells.size()-2), tempNodeCells.get(i), Integer.toString(simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j))));
+							}
+						}
 					}
 				}
-			}
-			for (int j = 0; j < simplePattern.getTopologyNodes().get(i).getPreviousActions().size(); j++){
-				if (simplePattern.getTopologyNodes().get(i).getPreviousActions().get(j).compareTo("start")==0){
-					if (simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j) > minimumFrequency){
-						tempRelationCells.add(initRelation(tempNodeCells.get(tempNodeCells.size()-2), tempNodeCells.get(i), Integer.toString(simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j))));
-					}
-				}
-			}
-		}
+				
+		
+		
+
 		
 		//include all them in cells[]
 		DefaultGraphCell[] cells = new DefaultGraphCell[tempNodeCells.size()+tempRelationCells.size()];
@@ -739,6 +738,7 @@ public class Topology extends JFrame {
 	public static DefaultGraphCell initRelation (DefaultGraphCell cell0, DefaultGraphCell cell1, String label){
 		DefaultGraphCell relation = new DefaultGraphCell();
 		DefaultEdge edge = new DefaultEdge(new String(label));
+	
 		
 		edge.setSource(cell0.getChildAt(0));
 		edge.setTarget(cell1.getChildAt(0));
@@ -748,6 +748,7 @@ public class Topology extends JFrame {
 		GraphConstants.setEndFill(edge.getAttributes(), true);
 		GraphConstants.setLineColor(edge.getAttributes(), Color.getHSBColor(0.63f,0.6464f,1.0f));
 		GraphConstants.setLabelAlongEdge(edge.getAttributes(), true);
+	//	GraphConstants.setLabelPosition(edge.getAttributes(), arg1);
 		
 		return relation;
 	}

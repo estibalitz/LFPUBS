@@ -32,6 +32,12 @@ public class simpleCompleteCondition {
 		return this.completeCondition;
 	}
 	
+	public void addSimpleBasicCondition(simpleBasicCondition simpleBasicCondition){
+		if(completeCondition!=null){
+			this.completeCondition.add(simpleBasicCondition);
+		}
+	}
+	
 	public void setConsequent(String consequent){
 		this.consequent = consequent;
 	}
@@ -46,6 +52,7 @@ public class simpleCompleteCondition {
 	
 	public int getOrder (){
 		return this.order;
-	}	
+	}
+	
 
 }

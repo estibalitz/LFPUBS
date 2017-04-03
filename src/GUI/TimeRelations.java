@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -30,7 +31,9 @@ import basic.DataStructure;
 import basic.simpleNode;
 import basic.simplePattern;
 import splitSequences.simpleEvent;
+import splitSequences.fullSequences;
 import timeRelations.simpleTimeRelation;
+import frequentSequences.simpleSequence;
 import javax.swing.JInternalFrame;
 
 import org.jgraph.JGraph;
@@ -51,6 +54,11 @@ import com.jgraph.layout.hierarchical.JGraphHierarchicalLayout;
 import javax.swing.JTextArea;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class TimeRelations extends JFrame {
 	
@@ -262,12 +270,14 @@ public class TimeRelations extends JFrame {
 									JOptionPane.showMessageDialog(jPanelTimeRelations, "Please, insert numeric values (from 0 to 100)",
 										    "Numeric warning",
 										    JOptionPane.WARNING_MESSAGE);
-								}								
+								}	
+								
 							}
 						});
 			}
 			return jButtonDiscoverTimeRelations;
 		}
+		
 		
 		private boolean checkIsNumberFromXToY (String text, int lowValue, int upValue){
 			try{
