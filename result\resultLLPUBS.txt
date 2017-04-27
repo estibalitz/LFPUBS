@@ -1,0 +1,199 @@
+
+Action Map 0
+
+(General Conditions)
+
+ context (DayOfWeek (=,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Monday))& context (TimeOfDay(>,09:18:06)) & context (TimeOfDay(<,09:25:10))
+
+(Action Pattern 0)
+ON occurs (start,--,t0) Frequency: 18
+IF context ()
+THEN do (simple,(ON,LightBedroom (0)) , t) when --
+
+(Action Pattern 1)
+ON occurs (simple,(ON,LightBedroom (0)) , t0) Frequency: 18
+IF context ()
+THEN do (simple,(OFF,LightBedroom (0)) , t) when t = t0 + 180.0000000000001 s.
+
+
+(Action Pattern 2)
+ON occurs (simple,(OFF,LightBedroom (0)) , t0) Frequency: 18
+IF context ()
+THEN do (simple,(ON,BedroomDoor (0)) , t) when t = t0 + 19.5 s.
+
+
+(Action Pattern 3)
+ON occurs (simple,(ON,BedroomDoor (0)) , t0) Frequency: 18
+IF context ()
+THEN do (simple,(OFF,BedroomDoor (0)) , t) when t = t0 + 20.0 s.
+
+
+(Action Pattern 4)
+ON occurs (simple,(OFF,BedroomDoor (0)) , t0) Frequency: 16
+IF context ()
+THEN do (simple,(ON,Entrance (0)) , t) when t = t0 + 5.0 s.
+
+(Action Pattern 5)
+ON occurs (simple,(OFF,BedroomDoor (0)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(ON,Corridor (0)) , t) when t = t0 + 5.0 s.
+
+
+(Action Pattern 6)
+ON occurs (simple,(ON,Entrance (0)) , t0) Frequency: 16
+IF context ()
+THEN do (simple,(ON,Corridor (0)) , t) when t = t0 + 0.0 s.
+
+(Action Pattern 7)
+ON occurs (simple,(ON,Entrance (0)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(ON,Toilet (0)) , t) when t = t0 + 5.0 s.
+
+
+(Action Pattern 8)
+ON occurs (simple,(ON,Entrance (1)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(ON,Corridor (1)) , t) when t = t0 + 0.0 s.
+
+(Action Pattern 9)
+ON occurs (simple,(ON,Entrance (1)) , t0) Frequency: 16
+IF context ()
+THEN do (simple,(ON,Kettle (0)) , t) when t = t0 + 4.933333333333334 s.
+
+
+(Action Pattern 10)
+ON occurs (simple,(ON,Corridor (0)) , t0) Frequency: 14
+IF context ()
+THEN do (simple,(ON,Toilet (0)) , t) when t = t0 + 5.0 s.
+
+(Action Pattern 11)
+ON occurs (simple,(ON,Corridor (0)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(ON,Entrance (0)) , t) when t = t0 + 0.0 s.
+
+(Action Pattern 12)
+ON occurs (simple,(ON,Corridor (0)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(OFF,Entrance (0)) , t) when t = t0 + 0.0 s.
+
+
+(Action Pattern 13)
+ON occurs (simple,(ON,Corridor (1)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(ON,Kettle (0)) , t) when t = t0 + 5.0 s.
+
+(Action Pattern 14)
+ON occurs (simple,(ON,Corridor (1)) , t0) Frequency: 16
+IF context ()
+THEN do (simple,(ON,Entrance (1)) , t) when t = t0 + 0.5625 s.
+
+
+(Action Pattern 15)
+ON occurs (simple,(ON,Toilet (0)) , t0) Frequency: 14
+IF context ()
+THEN do (simple,(OFF,Entrance (0)) , t) when t = t0 + 0.0 s.
+
+(Action Pattern 16)
+ON occurs (simple,(ON,Toilet (0)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(OFF,Corridor (0)) , t) when t = t0 + 0.0 s.
+
+(Action Pattern 17)
+ON occurs (simple,(ON,Toilet (0)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(OFF,Toilet (0)) , t) when t = t0 + 216.5 s.
+
+
+(Action Pattern 18)
+ON occurs (simple,(OFF,Entrance (0)) , t0) Frequency: 16
+IF context (( (time(<=,33651.0))) (Priority: 0))
+THEN do (simple,(OFF,Corridor (0)) , t) when t = t0 + 1.5 s.
+
+(Action Pattern 19)
+ON occurs (simple,(OFF,Entrance (0)) , t0) Frequency: 16
+IF context (( ) (Priority: -1))
+THEN do (simple,(ON,Cupboard6 (0)) , t) when t = t0 + 5.5625 s.
+
+(Action Pattern 20)
+ON occurs (simple,(OFF,Entrance (0)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(OFF,Toilet (0)) , t) when t = t0 + 240.0 s.
+
+(Action Pattern 21)
+ON occurs (simple,(OFF,Entrance (0)) , t0) Frequency: 1
+IF context ()
+THEN do (simple,(OFF,Corridor (1)) , t) when t = t0 + -60.0 s.
+
+
+(Action Pattern 22)
+ON occurs (simple,(OFF,Corridor (0)) , t0) Frequency: 14
+IF context ()
+THEN do (simple,(OFF,Toilet (0)) , t) when t = t0 + 240.0 s.
+
+(Action Pattern 23)
+ON occurs (simple,(OFF,Corridor (0)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(OFF,Entrance (0)) , t) when t = t0 + 0.0 s.
+
+(Action Pattern 24)
+ON occurs (simple,(OFF,Corridor (0)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(ON,Toilet (0)) , t) when t = t0 + 0.0 s.
+
+
+(Action Pattern 25)
+ON occurs (simple,(OFF,Corridor (1)) , t0) Frequency: 16
+IF context ()
+THEN do (simple,(OFF,Entrance (0)) , t) when t = t0 + 60.0 s.
+
+(Action Pattern 26)
+ON occurs (simple,(OFF,Corridor (1)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(ON,Cupboard6 (0)) , t) when t = t0 + 65.0 s.
+
+
+(Action Pattern 27)
+ON occurs (simple,(OFF,Toilet (0)) , t0) Frequency: 2
+IF context ()
+THEN do (simple,(ON,Entrance (1)) , t) when t = t0 + 0.0 s.
+
+(Action Pattern 28)
+ON occurs (simple,(OFF,Toilet (0)) , t0) Frequency: 16
+IF context ()
+THEN do (simple,(ON,Corridor (1)) , t) when t = t0 + 9.75 s.
+
+
+(Action Pattern 29)
+ON occurs (simple,(ON,Kettle (0)) , t0) Frequency: 17
+IF context ()
+THEN do (simple,(OFF,Corridor (1)) , t) when t = t0 + 5.0 s.
+
+(Action Pattern 30)
+ON occurs (simple,(ON,Kettle (0)) , t0) Frequency: 1
+IF context ()
+THEN do (simple,(OFF,Entrance (0)) , t) when t = t0 + 65.0 s.
+
+
+(Action Pattern 31)
+ON occurs (simple,(ON,Cupboard6 (0)) , t0) Frequency: 18
+IF context ()
+THEN do (simple,(OFF,Cupboard6 (0)) , t) when t = t0 + 4.705883602540889 s.
+
+
+(Action Pattern 32)
+ON occurs (simple,(OFF,Cupboard6 (0)) , t0) Frequency: 18
+IF context ()
+THEN do (simple,(ON,Radio (0)) , t) when t = t0 + 4.705882352941177 s.
+
+
+(Action Pattern 33)
+ON occurs (simple,(ON,Radio (0)) , t0) Frequency: 18
+IF context ()
+THEN do (simple,(OFF,Kettle (0)) , t) when t = t0 + 40.705882352941174 s.
+
+
+(Action Pattern 34)
+ON occurs (simple,(OFF,Kettle (0)) , t0) Frequency: 18
+IF context ()
+THEN do (--,end,t) when --
+
