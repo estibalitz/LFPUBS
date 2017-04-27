@@ -32,6 +32,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/mdx/Desktop/test/lfpubs/External_Jars/weka.jar"/>
+	<classpathentry kind="lib" path="external_jars/weka.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
