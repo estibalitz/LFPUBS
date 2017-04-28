@@ -129,8 +129,6 @@ public class Automate extends JFrame {
 	
 	private JButton jButtonAutomate=null;
 	
-	private JButton jButtonSaveAll=null;
-	
 	private JList jListDevices=null;
 	
 	private JScrollPane listsScrollerDevices=null;
@@ -458,7 +456,6 @@ public class Automate extends JFrame {
 		jPanelPatterns.add(getJPanelPatternsEvents(),null);
 		jPanelPatterns.add(getJPanelPatternsProperties(),null);
 		jPanelPatterns.add(getJButtonSavePatterns(),null);
-		jPanelPatterns.add(getJButtonSaveAll(),null);
 		}
 		return  jPanelPatterns;
 	}
@@ -505,10 +502,10 @@ public class Automate extends JFrame {
 					BufferedWriter bw = new BufferedWriter(new FileWriter("resultReasoner0.txt"));
 					PrintWriter writer = new PrintWriter(bw);
 					writeGeneralConditions(DataStructure.getInstance().getSplitSequencesDataStructure().getAllRawSequences(),jComboBoxSelectSequence.getSelectedIndex(),DataStructure.getInstance().getFrequentSequencesDataStructure().getAllFoundSequences(), writer);
-					for(int i=0; i<failingPaths.size();i++){
-					//System.out.println(failingPaths.size());
-					writePattern(failingPaths.get(i).getRight().get(failingPaths.get(i).getRight().size()-1), writer);
-					writeLastPattern(failingPaths.get(i), writer, numbAction,i);
+					for(int i=0; i<FinalfailingPaths.size();i++){
+					FinalfailingPaths.get(i).getRight().get(FinalfailingPaths.get(i).getRight().size()-1).setRep(0);
+					writePattern(FinalfailingPaths.get(i).getRight().get(FinalfailingPaths.get(i).getRight().size()-1), writer);
+					writeLastPattern(FinalfailingPaths.get(i), writer, numbAction,i);
 					}
 					writer.close();
 				}
@@ -521,23 +518,7 @@ public class Automate extends JFrame {
 		return jButtonSavePatterns;
 	}
 	
-	private JButton getJButtonSaveAll(){
-		if(jButtonSaveAll==null){
-			jButtonSaveAll=new JButton();
-			jButtonSaveAll.setBounds(new Rectangle(125,600,160,24));
-			jButtonSaveAll.setText("Save All");
-			jButtonSaveAll.addActionListener(new java.awt.event.ActionListener(){
-				public void actionPerformed(java.awt.event.ActionEvent e){
-				for(int i=0; i<FinalfailingPaths.size();i++){
-					//writePatterns(DataStructure.getInstance().getSplitSequencesDataStructure().getAllRawSequences(),jComboBoxSelectSequence.getSelectedIndex(),DataStructure.getInstance().getFrequentSequencesDataStructure().getAllFoundSequences());
-				}	
-					
-				}
-			});
-		}
-		return jButtonSaveAll;
-		
-	}
+
 	private JTable getJTableDirectedGraph(){
 		if(jTableDirectedGraph==null){
 			jTableDirectedGraph= new JTable();
@@ -580,7 +561,6 @@ public class Automate extends JFrame {
 		}
 		checkRepMaxDevices=DataStructure.getInstance().getTreeDataStructure().getDevicesInfor().findEventRep(allsequences,sequences);
 		Average=DataStructure.getInstance().getTreeDataStructure().getDevicesInfor().findtimeEventAverage(allsequences, sequences);
-		//Average=DataStructure.getInstance().getTreeDataStructure().getDevicesInfor().calculateAverage(allsequences, sequences);
 	}
 	
 
@@ -626,12 +606,13 @@ public class Automate extends JFrame {
 						String Event=decapsulationCluster(simplePattern.getTopologyNodes().get(find).getComponentsNode().get(j));
 						cluster_rep_max= (int)checkRepMaxDevices.get(Event).doubleValue();
 						cluster_rep+=cluster_rep_max;
+						String id_clus=simplePattern.getTopologyNodes().get(find).getComponentsNode().get(j);
 						a=a+1;
-						Nodes.get(id).addComponent(Event);
+						Nodes.get(id).addComponent(id_clus);
 					}
 					
-					int repMax=(int)Math.round(cluster_rep/a);
-					Nodes.get(id).setMaxRep(repMax);
+					//int repMax=(int)Math.round(cluster_rep/a);
+					Nodes.get(id).setMaxRep(cluster_rep);
 					Nodes.get(id).setType("cluster");
 				}
 
@@ -681,35 +662,15 @@ public class Automate extends JFrame {
 		Nodes=createConditions (Nodes, simplePattern,minimumFrequency);
 		root=checkSelectedDevices(root, Nodes, simplePattern);
 		Paths=createRoots(root,simplePattern);
+		filterPaths(Paths);
 		jTableDirectedGraph=initTable(Nodes);
 		
 		return jTableDirectedGraph;
 												
 	
 	}
-	
-	private String findPos(String compositeActionsString) {
-		if ((compositeActionsString.compareTo("start")== 0) || (compositeActionsString.compareTo("end")== 0)){
-			return compositeActionsString;
-		}
-		
-		int pos = compositeActionsString.indexOf("_",0);
-		String tempAction = compositeActionsString.substring(0, pos);
-		
-		String position=compositeActionsString.substring(pos + 1, compositeActionsString.length()) + ")";
-						
-		return position;		
-	}
 
-	public int findEdgeCondition(Node nextNode, Node actualNode){
-	for(int i=0; i<nextNode.getEdge().size();i++){
-		if(nextNode.getEdge().get(i).getPreviousNode().getId().compareTo(actualNode.getId())==0){
-			return i;
-		}
-	}
-	return 0;
-	}
-
+//2.5. Write all the connections conditions in the new structure links
 	
 	public  LinkedHashMap<String, Node> createConditions(LinkedHashMap<String, Node> Nodes, simplePattern simplePattern,int minimumFrequency){
 		for(int i=0; i<simplePattern.getTopologyNodes().size(); i++){
@@ -722,7 +683,6 @@ public class Automate extends JFrame {
 					ArrayList<ArrayList<simpleCompleteCondition>> disjunctionConditions =simplePattern.getTopologyNodes().get(i).getDisjunctionConditions();
 					for(int z=0;z<disjunctionConditions.size();z++){
 						for(int s=0;s<disjunctionConditions.get(z).size();s++){
-							//System.out.println(findActionName(disjunctionConditions.get(z).get(s).consequent)+ "nere hurrengo noduen izena: "+findActionName(simplePattern.getTopologyNodes().get(i).getNextActions().get(j))+ "nere oingo noduen izena: "+findActionName(simplePattern.getTopologyNodes().get(i).getNode()));
 						if(disjunctionConditions.get(z).get(s).consequent.compareTo(simplePattern.getTopologyNodes().get(i).getNextActions().get(j))==0){
 							Nodes.get(simplePattern.getTopologyNodes().get(i).getNextActions().get(j)).getEdge().get(find).setDisjunctionConditions(disjunctionConditions.get(z));
 						}
@@ -751,6 +711,10 @@ public class Automate extends JFrame {
 			for(int i=0; i<Nodes.get(id).getEdge().size();i++){
 				name= findActionName(Nodes.get(id).getId());
 				previous=Nodes.get(id).getEdge().get(i).getPreviousNode().getId();
+				if(previous.compareTo("start")!=0){
+				 previous=findActionName(previous);
+				}
+				
 				time= String.valueOf(Nodes.get(id).getEdge().get(i).getTimeRelation());
 				freq=String.valueOf(Nodes.get(id).getEdge().get(i).getFrequency());
 				rep=String.valueOf(Nodes.get(id).getMaxRep());
@@ -847,7 +811,8 @@ public class Automate extends JFrame {
 		boolean outcome=true;
 		recursivity = recursivity+1;
 		currentPath.add(node);
-		if((dur>minduration)&&(node.getRep()<node.getMaxRep())&&(findActionName(node.getId()).compareTo(name)!=0)){
+		node.setRep(node.getRep()+1);
+		if((dur>minduration)&&(node.getRep()<=node.getMaxRep())&&(findActionName(node.getId()).compareTo(name)!=0)){
 			currentPath2=(ArrayList<Node>) currentPath.clone();
 			failingPaths.add(new ImmutableTriple<Double,Integer, ArrayList<Node>> (dur,freq,currentPath2));	
 			currentPath.remove(node);
@@ -856,7 +821,7 @@ public class Automate extends JFrame {
 		 if ((node.getRep()>node.getMaxRep())||(findActionName(node.getId()).compareTo(name)==0)){
 			return false;
 		}
-		 node.setRep(node.getRep()+1);
+		 
 		
 		
 		for(int i=0;i<node.getEdge().size();i++){
@@ -884,35 +849,40 @@ public class Automate extends JFrame {
 			
 		}
 	}
-	//System.out.println("Frequency max value:" +max+", Position in the failingPaths array: "+pos+" Luzera hasi: "+start+" Luzera bukau"+ end);
 	return pos;
 	}
 	//8.2 Calculate the minimum events related to the sequence in the path and closest to the duration
 	public Integer MinimumEventPath(int start, int end){
 		int pos=0;
 		int a=0;
+		int result=end-start;
 		for(int i=start; i<end; i++){
-			if(failingPaths.get(i).getRight().get(failingPaths.get(i).getRight().size()-1).getId().compareTo("0_0")!=0){
+			//if(failingPaths.get(i).getRight().get(failingPaths.get(i).getRight().size()-1).getId().compareTo("0_0")!=0){
 				if(a==0){
 				 a=i;
 				}
+				if(result==1){
+					pos=i;
+				}
+				else{
 				int sizes=failingPaths.get(a).getRight().size();
 				double dur=failingPaths.get(a).getLeft().doubleValue();
 				double dur_now=failingPaths.get(i).getLeft().doubleValue();
 				int size_now=failingPaths.get(i).getRight().size();
-				if((dur_now<dur)&&(size_now<sizes)){
+				//if((dur_now<dur)&&(size_now<sizes)){
+				if((size_now<=sizes)){
 				dur=dur_now;
 				sizes=size_now;
 				pos=i;
 			 }
 		 }
-		}
-		//System.out.println("Minimun Duration: "+dur+", Minimum number of events: "+sizes+" Hau da event txiki�e con duraci�n mas conocidos"+ pos);
+			}
+		
 		return pos;
 	}
 	
 	// 9.1 Save those paths that have the highest total frequency of each root-> and only those will be displayed in the GUI
-/*	public void filterPathsFrequency(ArrayList<Integer>Paths){
+	public void filterPaths(ArrayList<Integer>Paths){
 		if((Paths.size()>0)==true){
 		for(int i=0;i<Paths.size();i++){
 			int val=Paths.get(i);
@@ -922,7 +892,7 @@ public class Automate extends JFrame {
 		else{
 			System.out.println("no paths avaiable");
 		}
-	}*/
+	}
 	
 	//10. Create the graph of FinalPaths
 	protected JGraph visualizePaths(){
@@ -932,10 +902,10 @@ public class Automate extends JFrame {
 		tempNodeCells.clear();
 		tempRelationCells.clear();
 		//Create all the cells needed to create all the paths
-		for(int i=0; i<failingPaths.size();i++){
-			if(failingPaths.get(i).getRight().size()>1){
-			for(int j=0; j<failingPaths.get(i).getRight().size();j++){
-				tempNodeCells.add(initCell(findActionName(failingPaths.get(i).getRight().get(j).getId()),20,20));
+		for(int i=0; i<FinalfailingPaths.size();i++){
+			if(FinalfailingPaths.get(i).getRight().size()>1){
+			for(int j=0; j<FinalfailingPaths.get(i).getRight().size();j++){
+				tempNodeCells.add(initCell(findActionName(FinalfailingPaths.get(i).getRight().get(j).getId()),20,20));
 			}
 			tempNodeCells.add(initCell("end",20,20));
 		}
@@ -973,14 +943,14 @@ public class Automate extends JFrame {
 				jTextAreaPathsProperties.setLineWrap(true);
 				jTextAreaPathsProperties.setWrapStyleWord(true);
 				jTextAreaPathsProperties.append(newline);
-				if(failingPaths.size()>0){
-				for(int i=0; i<failingPaths.size();i++){
-					jTextAreaPathsProperties.append(findActionName(failingPaths.get(i).getRight().get(0).getId())+" Automation");
+				if(FinalfailingPaths.size()>0){
+				for(int i=0; i<FinalfailingPaths.size();i++){
+					jTextAreaPathsProperties.append(listSelectedDevices.get(i)+" Automation");
 					jTextAreaPathsProperties.append(newline);
 					jTextAreaPathsProperties.append(newline);
-					jTextAreaPathsProperties.append(" Duration of the Path:" +failingPaths.get(i).getLeft().doubleValue());
+					jTextAreaPathsProperties.append(" Duration of the Path:" +FinalfailingPaths.get(i).getLeft().doubleValue());
 					jTextAreaPathsProperties.append(newline);
-					jTextAreaPathsProperties.append(" Total-Frequency of the Path: "+ failingPaths.get(i).getMiddle().intValue());
+					jTextAreaPathsProperties.append(" Total-Frequency of the Path: "+ FinalfailingPaths.get(i).getMiddle().intValue());
 					jTextAreaPathsProperties.append(newline);
 					jTextAreaPathsProperties.append("--------------------------------------------------------------");
 					jTextAreaPathsProperties.append(newline);
@@ -1021,6 +991,7 @@ public class Automate extends JFrame {
 				writer.println(" context (DayOfWeek (=,"+dayOfWeek+"))& context (TimeOfDay(>,"+TimeOfDay[0]+")) & context (TimeOfDay(<,"+TimeOfDay[1]+"))");
 				writer.println();
 			}
+	//12. Write the patterns to introduce to the Reasoner, recursive algorithm that goes through every node in the FinalfailingPaths array
 
 	public boolean writePattern (Node node, PrintWriter writer){
 		boolean outcome=true;
@@ -1046,6 +1017,7 @@ public class Automate extends JFrame {
 	return outcome;
 	
 	}
+	//13. Write a pattern with each node, taking into account all the possible previous actions or events
 	public void writeTopology(Node node, PrintWriter writer){
 		
 		int z=0;
@@ -1202,7 +1174,7 @@ public class Automate extends JFrame {
 		//writeLastPattern(FinalfailingPaths,writer, number);
 	}
 	*/
-	
+	//7. The last Patterns is the one needed to automate a device, as no direct connection is between those two events, a pattern is created
 	public void writeLastPattern(ImmutableTriple<Double,Integer,ArrayList<Node>> FinalfailingPaths,PrintWriter writer, int number, int count){
 		writer.println("(Action Pattern " +number+")");
 		writer.print("ON occurs ");
@@ -1343,7 +1315,7 @@ public class Automate extends JFrame {
 		
 	return actionsString;
 	}
-	//15. 
+	//15. Decapsule the clusters
 	public static String decapsulationClusterLFPUBS(String compositeActionsString){
 		String actionsString = new String ();
 
@@ -1355,6 +1327,29 @@ public class Automate extends JFrame {
 		actionsString = action + "," + device + " (" + compositeActionsString.substring(pos + 1, compositeActionsString.length()) + ")";
 						
 		return actionsString;		
+	}
+	//16. Find Position of each node
+	
+	private String findPos(String compositeActionsString) {
+		if ((compositeActionsString.compareTo("start")== 0) || (compositeActionsString.compareTo("end")== 0)){
+			return compositeActionsString;
+		}
+		
+		int pos = compositeActionsString.indexOf("_",0);
+		String tempAction = compositeActionsString.substring(0, pos);
+		
+		String position=compositeActionsString.substring(pos + 1, compositeActionsString.length()) + ")";
+						
+		return position;		
+	}
+	//17. Find the edge/link that satisfies actual nose and next node links properties
+	public int findEdgeCondition(Node nextNode, Node actualNode){
+	for(int i=0; i<nextNode.getEdge().size();i++){
+		if(nextNode.getEdge().get(i).getPreviousNode().getId().compareTo(actualNode.getId())==0){
+			return i;
+		}
+	}
+	return 0;
 	}
 	
 	
