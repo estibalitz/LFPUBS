@@ -56,10 +56,24 @@ public class findGeneralConditions {
 							}
 				}
 			}
+			dayOfWeek=sortDaysOfWeek( dayOfWeek);
 				
 			String dayOFweek=String.join(",", dayOfWeek);
 			return dayOFweek;	
 			}
+
+		private ArrayList<String> sortDaysOfWeek(ArrayList<String> dayOfWeek) {
+			ArrayList<String> Days=new ArrayList<String>();
+		
+		String[] daysofWeek={"Monday", "Tuesday", "Wednesday","Thursday","Friday", "Saturday", "Sunday"};
+		for(int i=0;i<daysofWeek.length;i++){
+		if(dayOfWeek.contains(daysofWeek[i])==true){
+			Days.add(daysofWeek[i]);
+		}
+		}
+		return Days;
+	}
+
 
 		public String needAverageTime(ArrayList<fullSequences> sequence,ArrayList<Integer>sets){
 			//Variable initialization
