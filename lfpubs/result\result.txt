@@ -1,164 +1,108 @@
 
-      LightBedroom, ON -->0
-      LightBedroom, OFF -->1
-      BedroomDoor, ON -->2
-      BedroomDoor, OFF -->3
-      Entrance, ON -->4
-      Corridor, ON -->5
-      Toilet, ON -->6
-      Entrance, OFF -->7
-      Corridor, OFF -->8
-      Toilet, OFF -->9
-      Kettle, ON -->10
-      Cupboard6, ON -->11
-      Cupboard6, OFF -->12
-      Radio, ON -->13
-      Kettle, OFF -->14
-      KitchenDoor, ON -->15
+      Alarm, on -->0
+      Bathroom, on -->1
+      BathroomLights, on -->2
+      Cabinet, on -->3
+      Mouthwash, on -->4
+      Cabinet, off -->5
+      Towel, on -->6
+      Gel, on -->7
+      Shower, on -->8
+      Shower, off -->9
+      BathroomFan, on -->10
+      BathroomFan, off -->11
+      BathroomLights, off -->12
+      Bathroom, off -->13
+      Tap, on -->14
+      Tap, off -->15
 
 Sequence 0
-	Basic actions [LightBedroom ON, LightBedroom OFF, BedroomDoor ON, BedroomDoor OFF, Entrance ON, Corridor ON, Toilet ON, Entrance OFF, Corridor OFF, Toilet OFF, Kettle ON, Cupboard6 ON, Cupboard6 OFF, Radio ON, Kettle OFF]
-	Basic instances (18): [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
- 	Extra actions []
+	Basic actions [Alarm on, Bathroom on, BathroomLights on, Cabinet on, Mouthwash on, Cabinet off, BathroomLights off, Bathroom off]
+	Basic instances (9): [0, 1, 2, 3, 4, 5, 6, 7, 9]
+ 	Extra actions [Towel on, Gel on, Shower on, Shower off, BathroomFan on, BathroomFan off]
 	Extra instances (0): []
-        Action: LightBedroom ON (0); Type of node: simple; Components []
-          Previous action start count 18
-          Next action LightBedroom OFF (0) count 18
+        Action: Alarm on (0); Type of node: simple; Components []
+          Previous action start count 9
+          Next action Bathroom on (0) count 9
 
-        Action: LightBedroom OFF (0); Type of node: simple; Components []
-          Previous action LightBedroom ON (0) count 18
-               Time relation 0: 180.0000000000001 Particular instances (16/18) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-          Next action BedroomDoor ON (0) count 18
+        Action: Bathroom on (0); Type of node: simple; Components []
+          Previous action Alarm on (0) count 9
+               Time relation 0: 767.3333333333334 Particular instances (9/9) : [0, 1, 2, 3, 4, 5, 6, 7, 8]
+          Next action BathroomLights on (0) count 9
 
-        Action: BedroomDoor ON (0); Type of node: simple; Components []
-          Previous action LightBedroom OFF (0) count 18
-               Time relation 0: 19.5 Particular instances (18/18) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-          Next action BedroomDoor OFF (0) count 18
+        Action: BathroomLights on (0); Type of node: simple; Components []
+          Previous action Bathroom on (0) count 9
+               Time relation 0: 2.0 Particular instances (9/9) : [0, 1, 2, 3, 4, 5, 6, 7, 8]
+          Next action Cabinet on (0) count 9
 
-        Action: BedroomDoor OFF (0); Type of node: simple; Components []
-          Previous action BedroomDoor ON (0) count 18
-               Time relation 0: 20.0 Particular instances (16/18) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-          Next action Entrance ON (0) count 16
-          Next action Corridor ON (0) count 2
+        Action: Cabinet on (0); Type of node: simple; Components []
+          Previous action BathroomLights on (0) count 9
+               Time relation 0: 71.66666666666667 Particular instances (9/9) : [0, 1, 2, 3, 4, 5, 6, 7, 8]
+          Previous action Cabinet off (0) count 6
+               Time relation 0: 94.33333333333333 Particular instances (6/6) : [0, 1, 2, 3, 4, 5]
+          Next action Mouthwash on (0) count 8
+          Next action cluster_0 count 6
+          Next action Cabinet off (0) count 1
 
-        Action: Entrance ON (0); Type of node: simple; Components []
-          Previous action BedroomDoor OFF (0) count 16
-               Time relation 0: 5.0 Particular instances (14/16) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-          Previous action Corridor ON (0) count 2
-               Time relation 0: 0.0 Particular instances (2/2) : [0, 1]
-          Next action Corridor ON (0) count 16
-          Next action Toilet ON (0) count 2
+        Action: Mouthwash on (0); Type of node: simple; Components []
+          Previous action Cabinet on (0) count 8
+               Time relation 0: 5.0 Particular instances (8/8) : [0, 1, 2, 3, 4, 5, 6, 7]
+          Next action Cabinet off (0) count 8
 
-        Action: Entrance ON (1); Type of node: simple; Components []
-          Previous action Toilet OFF (0) count 2
-               Time relation 0: 0.0 Particular instances (2/2) : [0, 1]
-          Previous action Corridor ON (1) count 16
-               Time relation 0: 0.5625 Particular instances (16/16) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-          Next action Corridor ON (1) count 2
-          Next action Kettle ON (0) count 16
-
-        Action: Corridor ON (0); Type of node: simple; Components []
-          Previous action Entrance ON (0) count 16
-               Time relation 0: 0.0 Particular instances (15/16) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15]
-          Previous action BedroomDoor OFF (0) count 2
-               Time relation 0: 5.0 Particular instances (2/2) : [0, 1]
-          Next action Toilet ON (0) count 14
-          Next action Entrance ON (0) count 2
-          Next action Entrance OFF (0) count 2
-
-        Action: Corridor ON (1); Type of node: simple; Components []
-          Previous action Entrance ON (1) count 2
-               Time relation 0: 0.0 Particular instances (2/2) : [0, 1]
-          Previous action Toilet OFF (0) count 16
-               Time relation 0: 9.75 Particular instances (16/16) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-          Next action Kettle ON (0) count 2
-          Next action Entrance ON (1) count 16
-
-        Action: Toilet ON (0); Type of node: simple; Components []
-          Previous action Corridor ON (0) count 14
-               Time relation 0: 5.0 Particular instances (14/14) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-          Previous action Entrance ON (0) count 2
-               Time relation 0: 5.0 Particular instances (2/2) : [0, 1]
-          Previous action Corridor OFF (0) count 2
-               Time relation 0: 0.0 Particular instances (2/2) : [0, 1]
-          Next action Entrance OFF (0) count 14
-          Next action Corridor OFF (0) count 2
-          Next action Toilet OFF (0) count 2
-
-        Action: Entrance OFF (0); Type of node: simple; Components []
-          Previous action Toilet ON (0) count 14
-               Time relation 0: 0.0 Particular instances (14/14) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-          Previous action Corridor OFF (1) count 16
-               Time relation 0: 60.0 Particular instances (14/16) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-          Previous action Corridor OFF (0) count 2
-               Time relation 0: 0.0 Particular instances (2/2) : [0, 1]
-          Previous action Kettle ON (0) count 1
-               Time relation 0: 65.0 Particular instances (1/1) : [0]
-          Previous action Corridor ON (0) count 2
-               Time relation 0: 0.0 Particular instances (2/2) : [0, 1]
-          Next action Corridor OFF (0) count 16
+        Action: Cabinet off (0); Type of node: simple; Components []
+          Previous action Mouthwash on (0) count 8
+               Time relation 0: 1.125 Particular instances (8/8) : [0, 1, 2, 3, 4, 5, 6, 7]
+          Previous action cluster_0 count 6
+               Time relation 0: 1.0 Particular instances (6/6) : [0, 1, 2, 3, 4, 5]
+          Previous action Cabinet on (0) count 1
+               Time relation 0: 6.0 Particular instances (1/1) : [0]
+          Next action Cabinet on (0) count 6
                  Condition 0
-                    time <= 33651.0    THEN Corridor OFF (0)   ORDER (0)
-          Next action Cupboard6 ON (0) count 16
+                    time <= 29856.0    THEN Cabinet on (0)   ORDER (0)
+                 Condition 1
+                    time <= 30137.0   time >= 30005.0    THEN Cabinet on (0)   ORDER (1)
+          Next action Shower on (0) count 6
                  Condition 0
-                     THEN Cupboard6 ON (0)   ORDER (-1)
-          Next action Toilet OFF (0) count 2
-          Next action Corridor OFF (1) count 1
+                     THEN Shower on (0)   ORDER (-1)
+          Next action BathroomLights off (0) count 3
 
-        Action: Corridor OFF (0); Type of node: simple; Components []
-          Previous action Entrance OFF (0) count 16
-               Time relation 0: 1.5 Particular instances (16/16) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-          Previous action Toilet ON (0) count 2
-               Time relation 0: 0.0 Particular instances (2/2) : [0, 1]
-          Next action Toilet OFF (0) count 14
-          Next action Entrance OFF (0) count 2
-          Next action Toilet ON (0) count 2
+        Action: cluster_0; Type of node: cluster; Components [Towel on (0), Gel on (0)]
+          Previous action Cabinet on (0) count 6
+               Time relation 0: 11.166666666666666 Particular instances (6/6) : [0, 1, 2, 3, 4, 5]
+          Next action Cabinet off (0) count 6
 
-        Action: Corridor OFF (1); Type of node: simple; Components []
-          Previous action Kettle ON (0) count 17
-               Time relation 0: 5.0 Particular instances (15/17) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-          Previous action Entrance OFF (0) count 1
-               Time relation 0: -60.0 Particular instances (1/1) : [0]
-          Next action Entrance OFF (0) count 16
-          Next action Cupboard6 ON (0) count 2
+        Action: Shower on (0); Type of node: simple; Components []
+          Previous action Cabinet off (0) count 6
+               Time relation 0: 153.5 Particular instances (6/6) : [0, 1, 2, 3, 4, 5]
+          Next action Shower off (0) count 6
 
-        Action: Toilet OFF (0); Type of node: simple; Components []
-          Previous action Corridor OFF (0) count 14
-               Time relation 0: 240.0 Particular instances (14/14) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-          Previous action Entrance OFF (0) count 2
-               Time relation 0: 240.0 Particular instances (2/2) : [0, 1]
-          Previous action Toilet ON (0) count 2
-               Time relation 0: 216.5 Particular instances (2/2) : [0, 1]
-          Next action Entrance ON (1) count 2
-          Next action Corridor ON (1) count 16
+        Action: Shower off (0); Type of node: simple; Components []
+          Previous action Shower on (0) count 6
+               Time relation 0: 293.0 Particular instances (6/6) : [0, 1, 2, 3, 4, 5]
+          Next action BathroomFan on (0) count 4
+          Next action BathroomLights off (0) count 2
 
-        Action: Kettle ON (0); Type of node: simple; Components []
-          Previous action Corridor ON (1) count 2
-               Time relation 0: 5.0 Particular instances (2/2) : [0, 1]
-          Previous action Entrance ON (1) count 16
-               Time relation 0: 4.933333333333334 Particular instances (15/16) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15]
-          Next action Corridor OFF (1) count 17
-          Next action Entrance OFF (0) count 1
+        Action: BathroomFan on (0); Type of node: simple; Components []
+          Previous action Shower off (0) count 4
+               Time relation 0: 84.0 Particular instances (4/4) : [0, 1, 2, 3]
+          Next action BathroomFan off (0) count 4
 
-        Action: Cupboard6 ON (0); Type of node: simple; Components []
-          Previous action Entrance OFF (0) count 16
-               Time relation 0: 5.5625 Particular instances (16/16) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-          Previous action Corridor OFF (1) count 2
-               Time relation 0: 65.0 Particular instances (2/2) : [0, 1]
-          Next action Cupboard6 OFF (0) count 18
+        Action: BathroomFan off (0); Type of node: simple; Components []
+          Previous action BathroomFan on (0) count 4
+               Time relation 0: 209.25 Particular instances (4/4) : [0, 1, 2, 3]
+          Next action BathroomLights off (0) count 4
 
-        Action: Cupboard6 OFF (0); Type of node: simple; Components []
-          Previous action Cupboard6 ON (0) count 18
-               Time relation 0: 4.705883602540889 Particular instances (17/18) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17]
-          Next action Radio ON (0) count 18
+        Action: BathroomLights off (0); Type of node: simple; Components []
+          Previous action BathroomFan off (0) count 4
+               Time relation 0: 159.0 Particular instances (4/4) : [0, 1, 2, 3]
+          Previous action Cabinet off (0) count 3
+               Time relation 0: 106.0 Particular instances (3/3) : [0, 1, 2]
+          Previous action Shower off (0) count 2
+               Time relation 0: 442.5 Particular instances (2/2) : [0, 1]
+          Next action Bathroom off (0) count 9
 
-        Action: Radio ON (0); Type of node: simple; Components []
-          Previous action Cupboard6 OFF (0) count 18
-               Time relation 0: 4.705882352941177 Particular instances (17/18) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-          Next action Kettle OFF (0) count 18
-
-        Action: Kettle OFF (0); Type of node: simple; Components []
-          Previous action Radio ON (0) count 18
-               Time relation 0: 40.705882352941174 Particular instances (17/18) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-          Next action end count 18
+        Action: Bathroom off (0); Type of node: simple; Components []
+          Previous action BathroomLights off (0) count 9
+               Time relation 0: 24.0 Particular instances (9/9) : [0, 1, 2, 3, 4, 5, 6, 7, 8]
+          Next action end count 9
 
