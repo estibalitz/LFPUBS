@@ -793,10 +793,7 @@ public class Automate extends JFrame {
 			start=failingPathsClone.size();
 			//Analyze all the possible paths
 			try {
-<<<<<<< HEAD
-				
-=======
->>>>>>> 3d308096ec27c5a129f778743f56a05d51426f48
+
 				switch(device){
 				case "Kettle":
 					result=checkduration(node, dur,freq,name);
@@ -806,11 +803,7 @@ public class Automate extends JFrame {
 					break;
 				}
 			}
-<<<<<<< HEAD
 
-=======
-			
->>>>>>> 3d308096ec27c5a129f778743f56a05d51426f48
 			catch(StackOverflowError e){
 			
 			}
@@ -854,7 +847,6 @@ public class Automate extends JFrame {
 		return outcome;
 
 	 }
-<<<<<<< HEAD
 	//7.2 Check every possible path taking into account the relation between the nodes, the minimum duration of the path and the total frequency of the path
 		public boolean checkconnection(Node node, double dur, int freq,String name) throws StackOverflowError{
 			boolean outcome=true;
@@ -882,46 +874,7 @@ public class Automate extends JFrame {
 			currentPath.remove(node);
 			node.setRep(node.getRep()-1);
 			return outcome;
-		}
-=======
-	//7.2 Check every possible path taking into account the relation between the nodes, as the minimun duration is not important in this case only the frequency is used
-	public boolean checkconnection(Node node, double dur, int freq,String name) throws StackOverflowError{
-		boolean outcome=true;
-		recursivity = recursivity+1;
-		currentPath.add(node);
-		node.setRep(node.getRep()+1);
-		if((recursivity>1)&&(node.getRep()<=node.getMaxRep())&&(findActionName(node.getId()).contains(name)==false)){
-			currentPath2=(ArrayList<Node>) currentPath.clone();
-			failingPaths.add(new ImmutableTriple<Double,Integer, ArrayList<Node>> (dur,freq,currentPath2));	
-			currentPath.remove(node);
-			return false;
-		}
-		 if ((recursivity<1)||(node.getRep()>node.getMaxRep())||(findActionName(node.getId()).compareTo(name)==0)){
-			return false;
-		}
-		 
-		
-		
-		for(int i=0;i<node.getEdge().size();i++){
-			if(!checkconnection(node.getEdge().get(i).previousNode,dur+node.getEdge().get(i).timeRelation, freq+node.getEdge().get(i).frequency,name)){
-				outcome=false;	
-			}
-
-		}
-		currentPath.remove(node);
-		node.setRep(node.getRep()-1);
-		return outcome;
-
-	 }
-	
-	
-	
-	
-	
-	
-	
->>>>>>> 3d308096ec27c5a129f778743f56a05d51426f48
-	
+		}	
 	//8.1 Calculate the position in which the maximum frequency of each root is saved 
 	public Integer MaxFrequencyPath(int start, int end){
 		int max=0;
@@ -1097,10 +1050,6 @@ public class Automate extends JFrame {
 		}
 		for(int i=0; i<node.getEdge().size(); i++){
 			if(!writePattern(node.getEdge().get(i).previousNode, writer, name)){
-<<<<<<< HEAD
-=======
-				//nextName=findActionName(node.getId());
->>>>>>> 3d308096ec27c5a129f778743f56a05d51426f48
 			outcome=false;
 			}
 		}
@@ -1113,11 +1062,9 @@ public class Automate extends JFrame {
 		int z=0;
 		
 		for(int i=0; i<node.getEdge().size();i++){
-<<<<<<< HEAD
+
 			if((node.getEdge().get(i).getPreviousNode().getId().compareTo("start")!=0)&&(findActionName(node.getEdge().get(i).getPreviousNode().getId()).contains(name)==false))
-=======
-			if((node.getEdge().get(i).getPreviousNode().getId().compareTo("start")!=0)&&(findActionName(node.getEdge().get(i).getPreviousNode().getId()).contains(name)==false)){
->>>>>>> 3d308096ec27c5a129f778743f56a05d51426f48
+
 			writer.println("(Action Pattern " + numbAction+")");
 			writer.print("ON occurs ");
 			writeEventLFPUBS(node.getEdge().get(i), writer);
@@ -1140,7 +1087,7 @@ public class Automate extends JFrame {
 			numbAction++;
 			}
 		}
-	}
+	
 			
 
 	// Extra methods to transform the data//
@@ -1293,11 +1240,10 @@ public class Automate extends JFrame {
 			String id=listSelectedDevices.get(count);
 			double mindurations=SetMinimumDuration(id);
 			double timeRelation=FinalfailingPaths.getLeft().doubleValue()-mindurations;
-<<<<<<< HEAD
+
 			if(timeRelation<=0){
-=======
-			if(timeRelation<0){
->>>>>>> 3d308096ec27c5a129f778743f56a05d51426f48
+
+
 				timeRelation=1;
 			}
 			writeActionLFPUBS(FinalfailingPaths.getRight().get(0).getNode(), timeRelation, writer);
@@ -1445,11 +1391,9 @@ public class Automate extends JFrame {
 						
 		return position;		
 	}
-<<<<<<< HEAD
-	//17. Find the edge/link that satisfies actual node and next node links properties
-=======
+
 //17. Find the edge/link that satisfies actual nose and next node links properties
->>>>>>> 3d308096ec27c5a129f778743f56a05d51426f48
+
 	public int findEdgeCondition(Node nextNode, Node actualNode){
 	for(int i=0; i<nextNode.getEdge().size();i++){
 		if(nextNode.getEdge().get(i).getPreviousNode().getId().compareTo(actualNode.getId())==0){
