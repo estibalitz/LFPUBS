@@ -123,7 +123,7 @@ public class findDisjunctionConditions {
 			double time = 0, day = 0;
 			//double [] temp = new double[S.num_S_devices];
 	
-			BufferedWriter bw = new BufferedWriter(new FileWriter("test\\test1.arff"));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("./test/test1.arff"));
 			PrintWriter writer = new PrintWriter(bw);
 			
 			writer.println("@relation on_device");
@@ -158,7 +158,7 @@ public class findDisjunctionConditions {
 					
 			writer.close();
 			
-			DataSource source = new DataSource("test\\test1.arff");
+			DataSource source = new DataSource("./test/test1.arff");
 			Instances data = source.getDataSet();
 			
 			return data;

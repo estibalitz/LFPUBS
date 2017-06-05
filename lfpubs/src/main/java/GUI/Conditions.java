@@ -656,7 +656,7 @@ public class Conditions extends JFrame {
 public static void createReport (ArrayList<simpleSequence> sequences, ArrayList<simplePattern> simplePatterns){
 	
 	try{
-		BufferedWriter bw = new BufferedWriter(new FileWriter("result\\result.txt"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter("./result/result.txt"));
 		PrintWriter writer = new PrintWriter(bw);
 		
 		writer.println();
@@ -687,7 +687,7 @@ public static void createReport (ArrayList<simpleSequence> sequences, ArrayList<
 public static void createReportLLFPUBS (ArrayList<simpleSequence> sequences, ArrayList<simplePattern> simplePatterns, ArrayList<fullSequences> allsequences,ArrayList<simpleSequence> frequentSets){
 	
 	try{
-		BufferedWriter bw = new BufferedWriter(new FileWriter("result\\resultLLPUBS.txt"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter("./result/resultLLPUBS.txt"));
 		PrintWriter writer = new PrintWriter(bw);
 		String dayOfWeek= new String();
 		String timeOfDay=new String();
@@ -1053,10 +1053,10 @@ public static void createMM(ArrayList<simpleSequence> sequences, ArrayList<simpl
 	
 	try{
 				
-		deleteDirectory(new File("result\\markovmodels"));
+		deleteDirectory(new File("./result/markovmodels"));
 
 		for (int i = 0; i < sequences.size(); i++){
-			String str = "result\\markovmodels\\MM" + i + ".txt"; 
+			String str = "./result/markovmodels/MM" + i + ".txt"; 
 			BufferedWriter bw = new BufferedWriter(new FileWriter(str));
 			PrintWriter writer = new PrintWriter(bw);
 			writeMM(simplePatterns.get(i), writer);
