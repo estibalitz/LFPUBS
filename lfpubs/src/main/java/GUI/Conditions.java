@@ -433,7 +433,7 @@ public class Conditions extends JFrame {
 		DataStructure.getInstance().getTimeRelationsDataStructure().setTempNodeNameCells(new ArrayList<String>());
 			
 		//-------------------------------------------------------------------------------
-		//               Hau dana pantallarau nahi baldin bada                    //
+		//              If all the graph is being represented                   //
 		//------------------------------------------------------------------------------
 		
 				

@@ -1,4 +1,4 @@
-start (simple,(ON,LightBedroom (0)) (simple,(OFF,LightBedroom (0)) (simple,(ON,BedroomDoor (0)) (simple,(OFF,BedroomDoor (0)) (simple,(ON,CorridorFrontMove (0)) (simple,(ON,CorridorMove (0)) (simple,(OFF,CorridorFrontMove (0)) (simple,(OFF,CorridorMove (0)) (simple,(ON,ToiletMove (0)) (simple,(OFF,ToiletMove (0)) (simple,(ON,Kettle (0)) (simple,(ON,CupboardKitchen6 (0)) (simple,(OFF,CupboardKitchen6 (0)) (simple,(ON,Radio (0)) (simple,(OFF,Kettle (0)) end
+start (simple,(ON,LightBedroom (0)) (simple,(OFF,LightBedroom (0)) (simple,(ON,BedroomDoor (0)) (simple,(OFF,BedroomDoor (0)) (simple,(ON,Entrance (0)) (simple,(ON,CorridorMove (0)) (simple,(OFF,Entrance (0)) (simple,(OFF,CorridorMove (0)) (simple,(ON,ToiletMove (0)) (simple,(OFF,ToiletMove (0)) (simple,(ON,Kettle (0)) (simple,(ON,CupboardKitchen6 (0)) (simple,(OFF,CupboardKitchen6 (0)) (simple,(ON,Radio (0)) (simple,(OFF,Kettle (0)) end
 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 

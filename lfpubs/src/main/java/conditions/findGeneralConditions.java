@@ -78,40 +78,44 @@ public class findGeneralConditions {
 		public String needAverageTime(ArrayList<fullSequences> sequence,ArrayList<Integer>sets){
 			//Variable initialization
 			long secondsIni=0;
-			DescriptiveStatistics stats= new DescriptiveStatistics();
+			DescriptiveStatistics start=new DescriptiveStatistics();
+			DescriptiveStatistics end=new DescriptiveStatistics();
 				for(int i=0;i<sets.size();i++){	
 					int	index=sets.get(i);
 					for(int j=0;j<sequence.get(index).getEventsOfSequence().size();j++){
 						secondsIni=0;
 						DateTime a= new DateTime(sequence.get(index).getEventsOfSequence().get(j).getTime());
 						secondsIni=Integer.valueOf(a.getSecondOfDay());
-						stats.addValue(secondsIni);	
+						if(j==0){
+							start.addValue(secondsIni);
+						}
+						else if(j==sequence.get(index).getEventsOfSequence().size()-1){
+							end.addValue(secondsIni);
+						}
 					}
 				}
-			
-			//Compute mean and standard deviation
-			double mean=stats.getMean();
-			double standarDeviation=stats.getStandardDeviation();
-			double start=mean-standarDeviation;
-			double end=mean+standarDeviation;
-			//System.out.println("media:" +mean+ "   "+"standard:" + standarDeviation);
-			
-			double[] data=new double[]{mean,standarDeviation,start,end};
+			//Compute new mean and standard deviation
+				double meannewstart=start.getMean();
+				double meannewend=end.getMean();
+				double standarDeviationstart=start.getStandardDeviation();
+				double standarDeviationend=end.getStandardDeviation();
+				double startnew=meannewstart-standarDeviationstart;
+				double endnew=meannewend+standarDeviationend;
+				//Convert data to hh:mm:ss format
 
-			//Convert data to hh:mm:ss format
-
-			long Starthh=(long)start/60/60;
-			long Startmm=((long)start/60)%60;
-			long Startss=((long)start%60);
-			String initialization=String.format("%02d:%02d:%02d", Starthh,Startmm,Startss);
-			
-			long Endhh=(long)end/60/60;
-			long Endmm=((long)end/60)%60;
-			long Endss=((long)end%60);
-			String finishing=String.format("%02d:%02d:%02d",Endhh,Endmm,Endss);
-			
-			String TimeOfDay= new StringBuilder().append(initialization).append("T").append(finishing).toString();
-			return TimeOfDay;
+				long starthh=(long)startnew/60/60;
+				long startmm=((long)startnew/60)%60;
+				long startss=((long)startnew%60);
+				String ini=String.format("%02d:%02d:%02d", starthh,startmm,startss);
+				
+				long endhh=(long)endnew/60/60;
+				long endmm=((long)endnew/60)%60;
+				long endss=((long)endnew%60);
+				String finish=String.format("%02d:%02d:%02d",endhh,endmm,endss);
+				
+			String TimeOFday=new StringBuilder().append(ini).append("T").append(finish).toString();
+			System.out.println(TimeOFday);
+			return TimeOFday;
 			
 			
 		}
