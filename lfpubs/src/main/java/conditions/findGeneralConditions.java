@@ -114,7 +114,7 @@ public class findGeneralConditions {
 				String finish=String.format("%02d:%02d:%02d",endhh,endmm,endss);
 				
 			String TimeOFday=new StringBuilder().append(ini).append("T").append(finish).toString();
-			System.out.println(TimeOFday);
+			//System.out.println(TimeOFday);
 			return TimeOFday;
 			
 			

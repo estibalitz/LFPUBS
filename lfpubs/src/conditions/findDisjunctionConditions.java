@@ -106,7 +106,8 @@ public class findDisjunctionConditions {
 			
 		}
 	
-	public ArrayList<ArrayList<simpleCompleteCondition>> findOutDisjunctionConditions (simpleNode node, ArrayList<simpleEvent> simpleEvents, ArrayList<Integer> listActions) throws Exception {
+	public ArrayList<ArrayList<simpleCompleteCondition>> findOutDisjunctionConditions (simpleNode node, ArrayList<simpleEvent> simpleEvents, ArrayList<Integer> listActions) throws 
+ {
 		Instances data;
 		ArrayList<simpleCompleteCondition> completeDisjunctionConditions = new ArrayList<simpleCompleteCondition>();
 		ArrayList<ArrayList<simpleCompleteCondition>> finalCompleteDisjunctionConditions = new ArrayList<ArrayList<simpleCompleteCondition>>();

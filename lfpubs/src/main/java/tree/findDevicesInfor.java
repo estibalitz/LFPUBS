@@ -102,7 +102,7 @@ public class findDevicesInfor {
 					DeviceRepMax.put(Event, DeviceRepMax.get(Event) + (1));
 					}
 				else{
-					double repeat=0;
+					double repeat=1;
 					DeviceRepMax.put(Event, repeat);
 				}
 				}
@@ -112,7 +112,7 @@ public class findDevicesInfor {
 		Iterator it=DeviceRepMax.keySet().iterator();
 		while(it.hasNext()){
 			String key=(String) it.next();
-			Double val=(double)Math.round((DeviceRepMax.get(key).doubleValue())/sets.size());
+			Double val=(double)Math.ceil((DeviceRepMax.get(key).doubleValue())/sets.size());
 			DeviceRepMax.put(key, val);
 		}
 		return DeviceRepMax;

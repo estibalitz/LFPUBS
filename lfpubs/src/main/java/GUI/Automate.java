@@ -506,7 +506,14 @@ public class Automate extends JFrame {
 					writeGeneralConditions(DataStructure.getInstance().getSplitSequencesDataStructure().getAllRawSequences(),jComboBoxSelectSequence.getSelectedIndex(),DataStructure.getInstance().getFrequentSequencesDataStructure().getAllFoundSequences(), writer);
 					for(int i=0; i<FinalfailingPaths.size();i++){
 						String name=findActionName(FinalfailingPaths.get(i).getRight().get(0).getId());
-					FinalfailingPaths.get(i).getRight().get(FinalfailingPaths.get(i).getRight().size()-1).setRep(0);
+					//FinalfailingPaths.get(i).getRight().get(FinalfailingPaths.get(i).getRight().size()-1).setRep(0);
+					//Clean all the nodes
+					boolean check=true;
+					try{
+					check=cleanNodes(FinalfailingPaths.get(i).getRight().get(FinalfailingPaths.get(i).getRight().size()-1), check);
+					}
+					catch(StackOverflowError ex){
+					}
 					writePattern(FinalfailingPaths.get(i).getRight().get(FinalfailingPaths.get(i).getRight().size()-1), writer, name);
 					writeLastPattern(FinalfailingPaths.get(i), writer, numbAction,i);
 					}
@@ -596,7 +603,7 @@ public class Automate extends JFrame {
 			Nodes.put(id, new Node(id));
 				if(checkRepMaxDevices.containsKey(name)==true){
 					int repMax=(int)checkRepMaxDevices.get(name).doubleValue();
-					Nodes.get(id).setMaxRep(1);
+					Nodes.get(id).setMaxRep(repMax);
 					Nodes.get(id).setType("simple");
 				}
 				else if((checkRepMaxDevices.containsKey(name)==false)&&(name.compareTo("start")!=0)&&(name.compareTo("end")!=0)){
@@ -822,8 +829,14 @@ public class Automate extends JFrame {
 	public boolean checkduration(Node node, double dur, int freq,String name) throws StackOverflowError{
 		boolean outcome=true;
 		recursivity = recursivity+1;
-		currentPath.add(node);
+
 		node.setRep(node.getRep()+1);
+		if(node.getRep()<=node.getMaxRep()){
+		currentPath.add(node);
+		}
+		else{
+			return false;
+		}
 		if((dur>minduration)&&(node.getRep()<=node.getMaxRep())&&(findActionName(node.getId()).contains(name)==false)){
 			currentPath2=(ArrayList<Node>) currentPath.clone();
 			failingPaths.add(new ImmutableTriple<Double,Integer, ArrayList<Node>> (dur,freq,currentPath2));	
@@ -1033,6 +1046,7 @@ public class Automate extends JFrame {
 	//12. Write the patterns to introduce to the Reasoner, recursive algorithm that goes through every node in the FinalfailingPaths array
 
 	public boolean writePattern (Node node, PrintWriter writer, String name){
+		
 		boolean outcome=true;
 		if((node.getId().compareTo("start")==0)||(node.getRep()>=1)||(findActionName(node.getId()).contains(name)==true)){
 			return false;
@@ -1053,6 +1067,7 @@ public class Automate extends JFrame {
 			outcome=false;
 			}
 		}
+		//node.setRep(node.getRep()-1);
 	return outcome;
 	
 	}
@@ -1063,7 +1078,7 @@ public class Automate extends JFrame {
 		
 		for(int i=0; i<node.getEdge().size();i++){
 
-			if((node.getEdge().get(i).getPreviousNode().getId().compareTo("start")!=0)&&(findActionName(node.getEdge().get(i).getPreviousNode().getId()).contains(name)==false))
+			if((node.getEdge().get(i).getPreviousNode().getId().compareTo("start")!=0)&&(findActionName(node.getEdge().get(i).getPreviousNode().getId()).contains(name)==false)){
 
 			writer.println("(Action Pattern " + numbAction+")");
 			writer.print("ON occurs ");
@@ -1087,6 +1102,7 @@ public class Automate extends JFrame {
 			numbAction++;
 			}
 		}
+	}
 	
 			
 
@@ -1182,41 +1198,7 @@ public class Automate extends JFrame {
 		GraphConstants.setLabelAlongEdge(edge.getAttributes(), true);
 		return relation;
 	}
-	//7. Write Topology LLFPUBS
-	/*public void writeTopologyLFPUBS(ImmutableTriple<Double,Integer,ArrayList<Node>> FinalfailingPaths, PrintWriter writer, int number){
-		int numActionPattern = 0;
-		
-		for(int i=0; i<FinalfailingPaths.getRight().size();i++){		
-			int a=i+1;
-			if(a!=FinalfailingPaths.getRight().size()){
-			Node next=FinalfailingPaths.getRight().get(a).getNode();
-			int find=findEdge( FinalfailingPaths.getRight().get(i).getEdge(),next.getId());
-			writer.println("(Action Pattern " + i + ")");
-			writer.print("ON occurs ");
-			//writeEventLFPUBS(FinalfailingPaths.getRight().get(i).getEdge().get(find),FinalfailingPaths.getRight().get(a).getNode(), writer);
-			writer.print("IF context (");
-			if(FinalfailingPaths.getRight().get(i).getEdge().get(find).getDisjunctionConditions().size()!=0){
-			writeConditionsLFPUBS(FinalfailingPaths.getRight().get(i).getEdge().get(find).getDisjunctionConditions().get(0), writer);
-			}
-			writer.println(")");
-			writer.print("THEN do ");
-			if (FinalfailingPaths.getRight().get(i).getId().compareTo("end")==0){
-				writer.print("(--,end,t) when --");
-			}
-			else{
-				double timeRelation;
-				timeRelation =FinalfailingPaths.getRight().get(i).getEdge().get(find).getTimeRelation();
-				writeActionLFPUBS (FinalfailingPaths.getRight().get(i).getNode(),timeRelation,writer);
-				}
-			writer.println();
-			
-			}
-			
-		}
-		writer.println();
-		//writeLastPattern(FinalfailingPaths,writer, number);
-	}
-	*/
+
 	//7. The last Patterns is the one needed to automate a device, as no direct connection is between those two events, a pattern is created
 	public void writeLastPattern(ImmutableTriple<Double,Integer,ArrayList<Node>> FinalfailingPaths,PrintWriter writer, int number, int count){
 		writer.println("(Action Pattern " +number+")");
@@ -1401,6 +1383,23 @@ public class Automate extends JFrame {
 		}
 	}
 	return 0;
+	}
+	// 18.Clean all the nodes
+	public boolean cleanNodes(Node node,boolean outcome)throws StackOverflowError{
+		outcome=true;
+		if(node.getRep()!=0){
+			node.setRep(0);
+		}
+		else{
+			outcome=false;
+			//return false;
+		}
+		for(int i=0; i<node.getEdge().size();i++){
+			if(!cleanNodes(node.getEdge().get(i).previousNode, outcome)){
+				outcome=false;
+			}
+		}
+		return outcome;
 	}
 	
 	

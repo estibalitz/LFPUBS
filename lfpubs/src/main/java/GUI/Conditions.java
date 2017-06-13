@@ -281,7 +281,7 @@ public class Conditions extends JFrame {
 												DataStructure.getInstance().getConditionsDataStructure().getDisjunctionConditions().findOutDisjunctionConditions(DataStructure.getInstance().getSimplePatterns().get(i).getTopologyNodes().get(j), DataStructure.getInstance().getSplitSequencesDataStructure().getSimpleEvents(), listActions);
 											}
 											catch (Exception exc){
-												System.err.println("Caught Exception: " + exc.getMessage());
+												//System.err.println("Caught Exception: " + exc.getMessage());
 											}
 										}
 									}
