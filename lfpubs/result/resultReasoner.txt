@@ -3,70 +3,10 @@ Action Map 0
 
 (General Conditions)
 
- context (DayOfWeek (=,Monday,Tuesday,Wednesday,Thursday,Friday))& context (TimeOfDay(>,09:15:01)) & context (TimeOfDay(<,09:31:45))
+ context (DayOfWeek (=,Monday,Tuesday,Wednesday,Thursday,Friday))& context (TimeOfDay(>,09:15:20)) & context (TimeOfDay(<,09:35:11))
 
 (Action Pattern 0)
-ON occurs (simple,(OFF,Corridor (0)), t0) Frequency: 18
-IF context(( (time(<=,33788.0))) (Priority: 0))
-THEN do (simple,(ON,ToiletMove (0)), t) when: t = t0 + 32.0 s. 
-
-(Action Pattern 1)
-ON occurs (simple,(OFF,Entrance (0)), t0) Frequency: 21
-IF context()
-THEN do (simple,(OFF,Corridor (0)), t) when: t = t0 + 0.0 s. 
-
-(Action Pattern 2)
-ON occurs (simple,(ON,Corridor (0)), t0) Frequency: 13
-IF context()
-THEN do (simple,(OFF,Corridor (0)), t) when: t = t0 + 25.0 s. 
-
-(Action Pattern 3)
-ON occurs (simple,(ON,Corridor (0)), t0) Frequency: 14
-IF context()
-THEN do (simple,(OFF,Entrance (0)), t) when: t = t0 + 7.0 s. 
-
-(Action Pattern 4)
-ON occurs (simple,(OFF,Corridor (0)), t0) Frequency: 9
-IF context(( (time(<=,33930.0))) (Priority: 1))
-THEN do (simple,(OFF,Entrance (0)), t) when: t = t0 + 3.0 s. 
-
-(Action Pattern 5)
-ON occurs (simple,(ON,Entrance (0)), t0) Frequency: 20
-IF context()
-THEN do (simple,(ON,Corridor (0)), t) when: t = t0 + 4.0 s. 
-
-(Action Pattern 6)
-ON occurs (simple,(OFF,ToiletMove (0)), t0) Frequency: 17
-IF context()
-THEN do (simple,(ON,Corridor (0)), t) when: t = t0 + 55.0 s. 
-
-(Action Pattern 7)
-ON occurs (simple,(OFF,BedroomDoor (0)), t0) Frequency: 14
-IF context()
-THEN do (simple,(ON,Entrance (0)), t) when: t = t0 + 0.0 s. 
-
-(Action Pattern 8)
-ON occurs (simple,(ON,BedroomDoor (0)), t0) Frequency: 17
-IF context()
-THEN do (simple,(OFF,BedroomDoor (0)), t) when: t = t0 + 1.0 s. 
-
-(Action Pattern 9)
-ON occurs (simple,(OFF,LightBedroom (0)), t0) Frequency: 24
-IF context()
-THEN do (simple,(ON,BedroomDoor (0)), t) when: t = t0 + 12.0 s. 
-
-(Action Pattern 10)
-ON occurs (simple,(ON,LightBedroom (0)), t0) Frequency: 24
-IF context()
-THEN do (simple,(OFF,LightBedroom (0)), t) when: t = t0 + 151.0 s. 
-
-(Action Pattern 11)
-ON occurs (simple,(ON,ToiletMove (0)), t0) Frequency: 19
-IF context()
-THEN do (simple,(OFF,ToiletMove (0)), t) when: t = t0 + 247.0 s. 
-
-(Action Pattern 12)
-ON occurs (simple,(ON,ToiletMove (0) ), t0) Frequency: 0
+ON occurs (simple,(ON,LightBedroom (0) ), t0) Probability: 0
 IF context ()
-THEN do (simple,(ON,Kettle (0)), t) when: t = t0 + 157.0 s. 
+THEN do (simple,(ON,Kettle (0)), t) when: t = t0 + 104.0 s. 
 

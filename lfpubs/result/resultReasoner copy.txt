@@ -1,0 +1,69 @@
+
+Action Map 0
+
+(General Conditions)
+
+ context (DayOfWeek (=,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday))& context (TimeOfDay(>,10:04:36)) & context (TimeOfDay(<,20:23:27))
+
+
+(Action Pattern 0)
+ON occurs (simple,(ON,EntranceDoor (0)), t0) Probability: 1.0
+IF context()
+THEN do (unordered,((OFF,EntranceDoor (0))&(ON,Entrance (0)), t) when: t = t0 + 1.0 s.
+
+(Action Pattern 1)
+ON occurs (unordered,((OFF,EntranceDoor (0))&(ON,Entrance (0)),t0) Probability:0.7058823529411765
+IF context()
+THEN do (simple,(ON,Corridor (0)), t) when: t = t0 + 3.0 s. 
+
+(Action Pattern 2)
+ON occurs (simple,(ON,Corridor (0)), t0) Probability: 1.0
+IF context()
+THEN do (simple,(ON,BedroomDoor (0)), t) when: t = t0 + 1.0 s. 
+
+(Action Pattern 3)
+ON occurs (simple,(ON,BedroomDoor (0)), t0) Probability: 1.0
+IF context()
+THEN do (simple,(OFF,BedroomDoor (0)), t) when: t = t0 + 1.0 s. 
+
+(Action Pattern 4)
+ON occurs (simple,(OFF,BedroomDoor (0)), t0) Probability: 0.38461538461538464
+IF context(( ) (Priority: -1))
+THEN do (simple,(ON,Wardrobe (0)), t) when: t = t0 + 323.0 s. 
+
+(Action Pattern 5)
+ON occurs (simple,(ON,Wardrobe (0)), t0) Probability: 1.0
+IF context()
+THEN do (simple,(OFF,Wardrobe (0)), t) when: t = t0 + 165.0 s. 
+
+
+(Action Pattern 6)
+ON occurs (simple,(OFF,Wardrobe (0)), t0) Probability: 1.0
+IF context()
+THEN do (simple,(ON,BedroomDoor (1)), t) when: t = t0 + 29.0 s. 
+
+(Action Pattern 7)
+ON occurs (simple,(ON,BedroomDoor (1)), t0) Probability: 1.0
+IF context()
+THEN do (simple,(OFF,BedroomDoor (1)), t) when: t = t0 + 1.0 s. 
+
+
+(Action Pattern 8)
+ON occurs (simple,(OFF,BedroomDoor (1)), t0) Probability: 0.5833333333333334
+IF context(( (time(<=,27822.0))) (Priority: 0))
+THEN do (simple,(ON,Entrance (1)), t) when: t = t0 + 5.0 s. 
+
+(Action Pattern 9)
+ON occurs (simple,(ON,Entrance (1)), t0) Probability: 0.631578947368421
+IF context()
+THEN do (simple,(OFF,Entrance (0)), t) when: t = t0 + 9.0 s.
+
+(Action Pattern 10)
+ON occurs (simple,(OFF,Entrance (0)), t0) Probability: 1.0
+IF context(( (time(>=,65362.0))) (Priority: 0) OR ( (time(<=,63485.0))) (Priority: 1))
+THEN do (simple,(ON,Sofa (0)), t) when: t = t0 + 95.0 s. 
+
+(Action Pattern 11)
+ON occurs (simple,(ON,Sofa (0) ), t0) Probability: 0
+IF context ()
+THEN do (simple,(ON,Lamp (0)), t) when: t is after t0

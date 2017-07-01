@@ -159,9 +159,9 @@ public class Automate extends JFrame {
 	
 	protected static LinkedHashMap<String,Double>Average=new LinkedHashMap<String,Double>();
 	
-	ArrayList<ImmutableTriple<Double,Integer,ArrayList<Node>>> failingPaths=new ArrayList<ImmutableTriple<Double,Integer,ArrayList<Node>>>();
+	ArrayList<ImmutableTriple<Double,Double,ArrayList<Node>>> failingPaths=new ArrayList<ImmutableTriple<Double,Double,ArrayList<Node>>>();
 	
-	ArrayList<ImmutableTriple<Double,Integer,ArrayList<Node>>> FinalfailingPaths=new ArrayList<ImmutableTriple<Double,Integer,ArrayList<Node>>>();
+	ArrayList<ImmutableTriple<Double,Double,ArrayList<Node>>> FinalfailingPaths=new ArrayList<ImmutableTriple<Double,Double,ArrayList<Node>>>();
 	
 	ArrayList<Node>currentPath=new ArrayList<Node>();
 	
@@ -375,7 +375,7 @@ public class Automate extends JFrame {
 				public void actionPerformed(java.awt.event.ActionEvent e){
 					//Initialize time
 					Date d=new Date();
-				    long s1,sTemp,s2;
+				    long s1,sTemp;
 				    d=new Date();
 				    s1=d.getTime();
 					//Initialize granularity slicer
@@ -594,7 +594,6 @@ public class Automate extends JFrame {
 		//Structure to save the possible paths
 		ArrayList<Integer>Paths=new ArrayList<Integer>();
 		
-		
 		// Create nodes and Set each parameter to each node/event
 		
 		for (int i = 0; i < simplePattern.getTopologyNodes().size(); i++) {
@@ -612,7 +611,7 @@ public class Automate extends JFrame {
 					int cluster_rep=0;
 					int a=0;
 					int cluster_rep_max=0;
-					for(int j=0;j<simplePattern.getTopologyNodes().get(find).getComponentsNode().size()-1;j++){
+					for(int j=0;j<simplePattern.getTopologyNodes().get(find).getComponentsNode().size();j++){
 						String Event=decapsulationCluster(simplePattern.getTopologyNodes().get(find).getComponentsNode().get(j));
 						cluster_rep_max= (int)checkRepMaxDevices.get(Event).doubleValue();
 						cluster_rep+=cluster_rep_max;
@@ -634,33 +633,38 @@ public class Automate extends JFrame {
 		// Create relations
 		for (int i =0;i<simplePattern.getTopologyNodes().size(); i++) {
 				for (int j = 0; j < simplePattern.getTopologyNodes().get(i).getPreviousActions().size(); j++) {
+					double frequency= calculateProbability( simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency());
 						if (simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j) > minimumFrequency){
+							//double frequency= calculateProbability( simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency());
 							if(simplePattern.getTopologyNodes().get(i).getPreviousActions().get(j).compareTo("start")!=0){
 								//when the time relation is well defined
 								if(simplePattern.getTopologyNodes().get(i).getTimeRelations().get(j).size()>0){
 									for(int k=0;k<simplePattern.getTopologyNodes().get(i).getTimeRelations().get(j).size();k++){
 										Double time= ((double)Math.round(simplePattern.getTopologyNodes().get(i).getTimeRelations().get(j).get(k).getSimpleTimeRelation()));
+										double linkfreq=simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j)/frequency;
 										Link l=new Link();
 										l.previousNode=Nodes.get(simplePattern.getTopologyNodes().get(i).getPreviousActions().get(j));
 										l.timeRelation=time;
-										l.frequency=simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j);
+										l.frequency=linkfreq;
 										Nodes.get(simplePattern.getTopologyNodes().get(i).getNode()).addEdge(l);
 										}
 									}
 								else{
 									//when the time relations is not well defined
 									Double time=(double)-2;
+									double linkfreq=simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j)/frequency;
 									Link l=new Link();
 									l.previousNode=Nodes.get(simplePattern.getTopologyNodes().get(i).getPreviousActions().get(j));
 									l.timeRelation=time;
-									l.frequency=simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j);
+									l.frequency=linkfreq;
 									Nodes.get(simplePattern.getTopologyNodes().get(i).getNode()).addEdge(l);
 
 									}
 							}
 							if(simplePattern.getTopologyNodes().get(i).getPreviousActions().get(j).compareTo("start")==0){
 								Link l= new Link();
-								l.frequency=simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j);
+								double linkfreq=simplePattern.getTopologyNodes().get(i).getPreviousActionsFrequency().get(j)/frequency;
+								l.frequency=linkfreq;
 								l.timeRelation=-1;
 								l.previousNode=Nodes.get("start");
 								Nodes.get(simplePattern.getTopologyNodes().get(i).getNode()).addEdge(l);
@@ -670,6 +674,7 @@ public class Automate extends JFrame {
 							}
 		}
 		Nodes=createConditions (Nodes, simplePattern,minimumFrequency);
+		
 		root=checkSelectedDevices(root, Nodes, simplePattern);
 		Paths=createRoots(root,simplePattern);
 		filterPaths(Paths);
@@ -678,6 +683,39 @@ public class Automate extends JFrame {
 		return jTableDirectedGraph;
 												
 	
+	}
+	private int recursivity2 =0;
+	//runtime simulation 
+	public boolean checkroot(Node root,int rep, String name){
+		boolean outcome=true;
+		recursivity2=recursivity2+1;
+		root.setRep(root.getRep()+1);
+		if(root.getRep()>=1){
+			return false;
+		}
+		for(int i=0; i<root.getEdge().size();i++){
+			if(!(checkroot(root.getEdge().get(i).getPreviousNode().getNode(), recursivity2, name))){
+				outcome=false;
+			}
+		}
+		outcome=false;
+		return outcome;
+		
+		
+	}
+	
+	
+	
+	
+//2.01 Calculate the probability each node has to establish connection with the next one
+	
+	double calculateProbability(ArrayList<Integer> frequency ){
+		double sum=0;
+		for(int i=0;i<frequency.size();i++){
+			sum=sum+frequency.get(i);
+		}
+		return sum;
+		
 	}
 
 //2.5. Write all the connections conditions in the new structure links
@@ -690,14 +728,15 @@ public class Automate extends JFrame {
 				int find=findEdgeCondition(Nodes.get(simplePattern.getTopologyNodes().get(i).getNextActions().get(j)), Nodes.get(simplePattern.getTopologyNodes().get(i).getNode()));
 				Link l=Nodes.get(simplePattern.getTopologyNodes().get(i).getNextActions().get(j)).getEdge().get(find);
 				if(simplePattern.getTopologyNodes().get(i).getDisjunctionConditions().size()!=0){
-					ArrayList<ArrayList<simpleCompleteCondition>> disjunctionConditions =simplePattern.getTopologyNodes().get(i).getDisjunctionConditions();
-					for(int z=0;z<disjunctionConditions.size();z++){
+					ArrayList<simpleCompleteCondition> disjunctionConditions =simplePattern.getTopologyNodes().get(i).getDisjunctionConditions().get(j);
+					Nodes.get(simplePattern.getTopologyNodes().get(i).getNextActions().get(j)).getEdge().get(find).setDisjunctionConditions(disjunctionConditions);
+					/*for(int z=0;z<disjunctionConditions.size();z++){
 						for(int s=0;s<disjunctionConditions.get(z).size();s++){
 						if(disjunctionConditions.get(z).get(s).consequent.compareTo(simplePattern.getTopologyNodes().get(i).getNextActions().get(j))==0){
 							Nodes.get(simplePattern.getTopologyNodes().get(i).getNextActions().get(j)).getEdge().get(find).setDisjunctionConditions(disjunctionConditions.get(z));
 						}
 						}
-						}
+						}*/
 					}
 				}
 			}
@@ -772,14 +811,14 @@ public class Automate extends JFrame {
 	public ArrayList<Integer> createRoots (ArrayList<Node>root,simplePattern simplePattern){
 		
 		ArrayList<Integer>Paths=new ArrayList<Integer>();
-		ArrayList<ImmutableTriple<Double,Integer,ArrayList<Node>>> failingPathsClone=new ArrayList<ImmutableTriple<Double,Integer,ArrayList<Node>>>();
+		ArrayList<ImmutableTriple<Double,Double,ArrayList<Node>>> failingPathsClone=new ArrayList<ImmutableTriple<Double,Double,ArrayList<Node>>>();
 	
 		
 		for(int j=0; j<root.size();j++){
 			boolean result;
 			Node node=root.get(j);
 			double dur=0;
-			int freq=0;
+			double freq=1;
 			int a=0;
 			int start=0;
 			int end=0;
@@ -796,7 +835,7 @@ public class Automate extends JFrame {
 			String name=device+" "+action;
 			minduration=SetMinimumDuration(id);
 			//System.out.println(minduration);
-			failingPathsClone=(ArrayList<ImmutableTriple<Double, Integer, ArrayList<Node>>>) failingPaths.clone();
+			failingPathsClone=(ArrayList<ImmutableTriple<Double, Double, ArrayList<Node>>>) failingPaths.clone();
 			start=failingPathsClone.size();
 			//Analyze all the possible paths
 			try {
@@ -806,6 +845,7 @@ public class Automate extends JFrame {
 					result=checkduration(node, dur,freq,name);
 					break;
 				default:
+					
 					result=checkconnection(node,dur,freq,name);
 					break;
 				}
@@ -814,7 +854,6 @@ public class Automate extends JFrame {
 			catch(StackOverflowError e){
 			
 			}
-		
 			//Check which paths have the highest Total Frequency
 			end=failingPaths.size();
 			//Integer position=MaxFrequencyPath(start,end);
@@ -826,7 +865,7 @@ public class Automate extends JFrame {
 	}
 	
 	//7.1 Check every possible path taking into account the relation between the nodes, the minimum duration of the path and the total frequency of the path
-	public boolean checkduration(Node node, double dur, int freq,String name) throws StackOverflowError{
+	public boolean checkduration(Node node, double dur, double freq,String name) throws StackOverflowError{
 		boolean outcome=true;
 		recursivity = recursivity+1;
 
@@ -839,7 +878,7 @@ public class Automate extends JFrame {
 		}
 		if((dur>minduration)&&(node.getRep()<=node.getMaxRep())&&(findActionName(node.getId()).contains(name)==false)){
 			currentPath2=(ArrayList<Node>) currentPath.clone();
-			failingPaths.add(new ImmutableTriple<Double,Integer, ArrayList<Node>> (dur,freq,currentPath2));	
+			failingPaths.add(new ImmutableTriple<Double,Double, ArrayList<Node>> (dur,freq,currentPath2));	
 			currentPath.remove(node);
 			return false;
 		}
@@ -850,7 +889,7 @@ public class Automate extends JFrame {
 		
 		
 		for(int i=0;i<node.getEdge().size();i++){
-			if(!checkduration(node.getEdge().get(i).previousNode,dur+node.getEdge().get(i).timeRelation, freq+node.getEdge().get(i).frequency,name)){
+			if(!checkduration(node.getEdge().get(i).previousNode,dur+node.getEdge().get(i).timeRelation, freq*node.getEdge().get(i).frequency,name)){
 				outcome=false;	
 			}
 
@@ -861,25 +900,24 @@ public class Automate extends JFrame {
 
 	 }
 	//7.2 Check every possible path taking into account the relation between the nodes, the minimum duration of the path and the total frequency of the path
-		public boolean checkconnection(Node node, double dur, int freq,String name) throws StackOverflowError{
+		public boolean checkconnection(Node node, double dur, Double freq,String name) throws StackOverflowError{
 			boolean outcome=true;
 			recursivity = recursivity+1;
 			currentPath.add(node);
 			node.setRep(node.getRep()+1);
-			if((dur>minduration)&&(node.getRep()<=node.getMaxRep())&&(findActionName(node.getId()).contains(name)==false)){
+			if((dur>0)&&(node.getRep()<=node.getMaxRep())&&(findActionName(node.getId()).contains(name)==false)&&(recursivity>=2)){
 				currentPath2=(ArrayList<Node>) currentPath.clone();
-				failingPaths.add(new ImmutableTriple<Double,Integer, ArrayList<Node>> (dur,freq,currentPath2));	
+				failingPaths.add(new ImmutableTriple<Double,Double, ArrayList<Node>> (dur,freq,currentPath2));	
 				currentPath.remove(node);
 				return false;
 			}
-			 if ((recursivity>1)&&(node.getRep()>node.getMaxRep())||(findActionName(node.getId()).contains(name)==true)){
+			 if ((node.getRep()>node.getMaxRep())||(findActionName(node.getId()).contains(name)==true)){
 				return false;
 			}
-			 
 			
 			
 			for(int i=0;i<node.getEdge().size();i++){
-				if(!checkduration(node.getEdge().get(i).previousNode,dur+node.getEdge().get(i).timeRelation, freq+node.getEdge().get(i).frequency,name)){
+				if(!checkconnection(node.getEdge().get(i).previousNode,dur+node.getEdge().get(i).timeRelation, freq*node.getEdge().get(i).frequency,name)){
 					outcome=false;	
 				}
 
@@ -890,7 +928,7 @@ public class Automate extends JFrame {
 		}	
 	//8.1 Calculate the position in which the maximum frequency of each root is saved 
 	public Integer MaxFrequencyPath(int start, int end){
-		int max=0;
+		Double max= 0.0;
 		int pos=0;
 		int value_int;
 	for(int i=start; i<end;i++){
@@ -905,28 +943,28 @@ public class Automate extends JFrame {
 	}
 	//8.2 Calculate the minimum events related to the sequence in the path and closest to the duration
 	public Integer MinimumEventPath(int start, int end){
+		
+		int sizes=0;
+		double dur=0.0;
+		double freq=0.0;
 		int pos=0;
 		int a=0;
 		int result=end-start;
 		for(int i=start; i<end; i++){
-			//if(failingPaths.get(i).getRight().get(failingPaths.get(i).getRight().size()-1).getId().compareTo("0_0")!=0){
-				if(a==0){
-				 a=i;
-				}
-				if(result==1){
-					pos=i;
-				}
-				else{
-				int sizes=failingPaths.get(a).getRight().size();
-				double dur=failingPaths.get(a).getLeft().doubleValue();
-				double dur_now=failingPaths.get(i).getLeft().doubleValue();
-				int size_now=failingPaths.get(i).getRight().size();
-				//if((dur_now<dur)&&(size_now<sizes)){
-				if((size_now<=sizes)){
+			double dur_now=failingPaths.get(i).getLeft().doubleValue();
+			int size_now=failingPaths.get(i).getRight().size();
+			double freq_now=failingPaths.get(i).getMiddle().doubleValue();
+			if(i==0){
+				dur=failingPaths.get(i).getLeft().doubleValue();
+				sizes=failingPaths.get(i).getRight().size();
+				freq=failingPaths.get(i).getMiddle().doubleValue();
+				
+			}
+			else if((size_now<=sizes)&&(freq_now>=freq)){
 				dur=dur_now;
 				sizes=size_now;
+				freq=freq_now;
 				pos=i;
-			 }
 		 }
 			}
 		
@@ -938,7 +976,9 @@ public class Automate extends JFrame {
 		if((Paths.size()>0)==true){
 		for(int i=0;i<Paths.size();i++){
 			int val=Paths.get(i);
+			//System.out.println(Paths.size());
 			FinalfailingPaths.add(failingPaths.get(val));
+			
 			}
 		}
 		else{
@@ -1002,7 +1042,7 @@ public class Automate extends JFrame {
 					jTextAreaPathsProperties.append(newline);
 					jTextAreaPathsProperties.append(" Duration of the Path:" +FinalfailingPaths.get(i).getLeft().doubleValue());
 					jTextAreaPathsProperties.append(newline);
-					jTextAreaPathsProperties.append(" Total-Frequency of the Path: "+ FinalfailingPaths.get(i).getMiddle().intValue());
+					jTextAreaPathsProperties.append(" Total-Frequency of the Path: "+ FinalfailingPaths.get(i).getMiddle().doubleValue());
 					jTextAreaPathsProperties.append(newline);
 					jTextAreaPathsProperties.append("--------------------------------------------------------------");
 					jTextAreaPathsProperties.append(newline);
@@ -1068,6 +1108,7 @@ public class Automate extends JFrame {
 			}
 		}
 		//node.setRep(node.getRep()-1);
+		System.out.println(numbAction);
 	return outcome;
 	
 	}
@@ -1079,16 +1120,14 @@ public class Automate extends JFrame {
 		for(int i=0; i<node.getEdge().size();i++){
 
 			if((node.getEdge().get(i).getPreviousNode().getId().compareTo("start")!=0)&&(findActionName(node.getEdge().get(i).getPreviousNode().getId()).contains(name)==false)){
-
 			writer.println("(Action Pattern " + numbAction+")");
 			writer.print("ON occurs ");
 			writeEventLFPUBS(node.getEdge().get(i), writer);
 			writer.print("IF context(");
 			if(node.getEdge().get(i).getDisjunctionConditions().size()!=0){
-				for(int j=0; j<node.getEdge().get(i).getDisjunctionConditions().size();j++){
 				writeConditionsLFPUBS(node.getEdge().get(i).getDisjunctionConditions(), writer);
 				}
-			}
+			
 			writer.println(")");
 			writer.print("THEN do ");
 			if(node.getId().compareTo("start")==0){
@@ -1200,11 +1239,11 @@ public class Automate extends JFrame {
 	}
 
 	//7. The last Patterns is the one needed to automate a device, as no direct connection is between those two events, a pattern is created
-	public void writeLastPattern(ImmutableTriple<Double,Integer,ArrayList<Node>> FinalfailingPaths,PrintWriter writer, int number, int count){
+	public void writeLastPattern(ImmutableTriple<Double,Double,ArrayList<Node>> FinalfailingPaths,PrintWriter writer, int number, int count){
 		writer.println("(Action Pattern " +number+")");
 		writer.print("ON occurs ");
 		if(FinalfailingPaths.getRight().get(FinalfailingPaths.getRight().size()-1).getType().compareTo("cluster")!=0){
-			writer.print("(simple,("+translateCompositeActionsToStringLFPUBS(FinalfailingPaths.getRight().get(FinalfailingPaths.getRight().size()-1).getId())+" ), t0) Frequency: 0");
+			writer.print("(simple,("+translateCompositeActionsToStringLFPUBS(FinalfailingPaths.getRight().get(FinalfailingPaths.getRight().size()-1).getId())+" ), t0) Probability: 0");
 		}
 		else{
 			writer.print("(unordered,(");
@@ -1228,6 +1267,11 @@ public class Automate extends JFrame {
 
 				timeRelation=1;
 			}
+			if(mindurations==-1){
+				System.out.println("no quatitative time Relation");
+				timeRelation=-2;
+			}
+			
 			writeActionLFPUBS(FinalfailingPaths.getRight().get(0).getNode(), timeRelation, writer);
 			writer.println();
 		}
@@ -1251,14 +1295,14 @@ public class Automate extends JFrame {
 		}
 		else{
 		if(previousNode.getType().compareTo("cluster")!=0){
-			writer.print("(simple,("+translateCompositeActionsToStringLFPUBS(previousNode.getId())+"), t0) Frequency: "+edge.getFrequency());
+			writer.print("(simple,("+translateCompositeActionsToStringLFPUBS(previousNode.getId())+"), t0) Probability: "+edge.getFrequency());
 		}
 		else{
 			writer.print("(unordered,(");
 			for(int i=0; i<edge.getPreviousNode().getComponents().size()-1;i++){
 				writer.print("(" +translateCompositeActionsToStringLFPUBS(edge.getPreviousNode().getComponents().get(i))+")&");
 			}
-			writer.print("(" + translateCompositeActionsToStringLFPUBS(previousNode.getComponents().get(previousNode.getComponents().size()-1))+"),t0) Frequency:" +edge.getFrequency());
+			writer.print("(" + translateCompositeActionsToStringLFPUBS(previousNode.getComponents().get(previousNode.getComponents().size()-1))+"),t0) Probability:" +edge.getFrequency());
 		}
 		}
 		writer.println();

@@ -5,7 +5,7 @@ import conditions.simpleCompleteCondition;
 public class Link {
 	public Node previousNode;
 	public double timeRelation;
-	public int frequency; 
+	public double frequency; 
 	private ArrayList<simpleCompleteCondition> disjunctionConditions = new ArrayList<simpleCompleteCondition>();
 
 	public Link(Node previousNode, int timeRelation,int frequency){
@@ -25,7 +25,7 @@ public class Link {
 	public void setPreviousNode(Node previousNode){
 		this.previousNode=previousNode;
 	}
-	public int getFrequency(){
+	public double getFrequency(){
 		return frequency;
 	}
 	public void setFrequency(int frequency){

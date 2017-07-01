@@ -80,6 +80,7 @@ public class findGeneralConditions {
 			long secondsIni=0;
 			DescriptiveStatistics start=new DescriptiveStatistics();
 			DescriptiveStatistics end=new DescriptiveStatistics();
+			DescriptiveStatistics Kettle=new DescriptiveStatistics();
 				for(int i=0;i<sets.size();i++){	
 					int	index=sets.get(i);
 					for(int j=0;j<sequence.get(index).getEventsOfSequence().size();j++){
@@ -89,9 +90,13 @@ public class findGeneralConditions {
 						if(j==0){
 							start.addValue(secondsIni);
 						}
+						else if( (sequence.get(index).getEventsOfSequence().get(j).getDevice().compareTo("Kettle")==0)&&(sequence.get(index).getEventsOfSequence().get(j).getAction().compareTo("ON")==0)){
+							Kettle.addValue(secondsIni);
+						}
 						else if(j==sequence.get(index).getEventsOfSequence().size()-1){
 							end.addValue(secondsIni);
 						}
+						
 					}
 				}
 			//Compute new mean and standard deviation
@@ -107,6 +112,14 @@ public class findGeneralConditions {
 				long startmm=((long)startnew/60)%60;
 				long startss=((long)startnew%60);
 				String ini=String.format("%02d:%02d:%02d", starthh,startmm,startss);
+			//Kettle
+				double meanKettle=Kettle.getMean();
+				String Kettles= String.format("%02d:%02d:%02d",(long)(meanKettle/60/60), (long) ((meanKettle/60)%60),(long)(meanKettle%60));
+				
+				
+				
+				
+				
 				
 				long endhh=(long)endnew/60/60;
 				long endmm=((long)endnew/60)%60;
